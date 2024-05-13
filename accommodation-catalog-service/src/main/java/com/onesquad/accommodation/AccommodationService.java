@@ -31,7 +31,7 @@ public class AccommodationService {
         // TODO: check if available (just to test service communication)
 
         AvailabilityCheckResponse availabilityCheckResponse = restTemplate.getForObject(
-                "http://localhost:8081/api/v1/reservation/{accommodationId}",
+                "http://RESERVATION-MANAGEMENT-SERVICE/api/v1/reservation/{accommodationId}",
                 AvailabilityCheckResponse.class,
                 accommodation.getId()
         );
