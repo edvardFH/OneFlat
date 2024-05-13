@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 public class ReservationService {
     private final ReservationRepository reservationRepository;
 
-    public boolean isBooked(Long accommodationId) {
-        return false;
+    public boolean isAvailable(Long accommodationId) {
+        return true;
     }
 }

@@ -13,8 +13,8 @@ public class ReservationController {
     private final ReservationService reservationService;
 
     @GetMapping(path = "{accommodationId}")
-    public BookedCheckResponse isBooked(@PathVariable("accommodationId") Long accommodationId) {
-        boolean isBooked = reservationService.isBooked(accommodationId);
-        return new BookedCheckResponse(isBooked);
+    public AvailabilityCheckResponse isAvailable(@PathVariable("accommodationId") Long accommodationId) {
+        boolean isAvailable = reservationService.isAvailable(accommodationId);
+        return new AvailabilityCheckResponse(isAvailable);
     }
 }
