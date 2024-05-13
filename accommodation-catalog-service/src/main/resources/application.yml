@@ -1,11 +1,10 @@
 server:
   port: 8080
-
 spring:
   application:
-    name: accommodation-service
+    name: accommodation-catalog-service
   datasource:
-    url: jdbc:postgresql://localhost:5432/accommodation
+    url: jdbc:postgresql://localhost:5432/accommodation-catalog
     username: onesquad
     password: password
   jpa:

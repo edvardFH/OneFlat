@@ -25,8 +25,8 @@ public class Accommodation {
           strategy = GenerationType.SEQUENCE,
           generator = "customer_id_sequence"
     )
-    private Integer id;
-    private Integer ownerId;
+    private Long id;
+    private Long ownerId;
     private String type;
     private String location;
     private double price;

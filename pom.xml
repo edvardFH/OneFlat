@@ -11,7 +11,8 @@
   <url>https://maven.apache.org</url>
 
   <modules>
-    <module>accommodation-service</module>
+    <module>accommodation-catalog-service</module>
+    <module>reservation-management-service</module>
   </modules>
 
   <properties>

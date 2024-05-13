@@ -1,9 +1,13 @@
 package com.onesquad.accommodation;
 
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
-public record AccommodationService(AccommodationRepository accommodationRepository) {
+@AllArgsConstructor
+public class AccommodationService {
+    private final AccommodationRepository accommodationRepository;
+
     public void registerAccommodation(AccommodationRegistrationRequest request) {
         Accommodation accommodation = Accommodation.builder()
                 .ownerId(request.ownerId())

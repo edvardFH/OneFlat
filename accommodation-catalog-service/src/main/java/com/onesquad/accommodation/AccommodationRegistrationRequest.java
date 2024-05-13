@@ -4,7 +4,7 @@ import java.util.UUID;
 
 
 public record AccommodationRegistrationRequest(
-        Integer ownerId,
+        Long ownerId,
         String type,
         String location,
         double price,
