@@ -1,6 +1,6 @@
 import Hero from '@/components/hero/hero'
-import Layout from '../layouts/layout'
 import HeroBanner from '@/components/heroBanner/heroBanner'
+import Layout from '@/layouts/layout'
 
 const Home = () => {
     return (

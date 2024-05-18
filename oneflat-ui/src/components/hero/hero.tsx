@@ -1,7 +1,6 @@
 import Box from '@mui/material/Box'
 import TextField from '@mui/material/TextField'
 import FmdGoodIcon from '@mui/icons-material/FmdGood'
-
 const Hero = () => {
     return (
         <div className="home-content">

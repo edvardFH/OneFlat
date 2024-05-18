@@ -1,4 +1,3 @@
-import * as React from 'react'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import CardMedia from '@mui/material/CardMedia'
@@ -17,7 +16,7 @@ interface PropsChild {
     desc: string
 }
 
-const MUICard = ({ height, src, alt, data }: Props) => {
+const _Card = ({ height, src, alt, data }: Props) => {
     return (
         <Card sx={{ maxWidth: 345 }}>
             <CardActionArea>
@@ -40,4 +39,4 @@ const MUICard = ({ height, src, alt, data }: Props) => {
     )
 }
 
-export default MUICard
+export default _Card

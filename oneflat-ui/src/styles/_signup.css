@@ -36,7 +36,17 @@
     gap: 1rem;
   }
 
+  .signup-form .signup-name{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
 
+
+
+input, select{
+  width: 100%;
+}
 
   .signup-img{
     background-image: url("https://wallpapers.com/images/hd/modern-beautiful-house-x1yu28g8twzle26l.jpg");

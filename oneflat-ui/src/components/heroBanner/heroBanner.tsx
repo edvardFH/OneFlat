@@ -1,5 +1,4 @@
 import Offers from '../topOffers/offers'
-
 const HeroBanner = () => {
     return (
         <div className="hero">
