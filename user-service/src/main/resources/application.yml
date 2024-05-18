@@ -1,10 +1,10 @@
 server:
-  port: 8083
+  port: 8082
 spring:
   application:
     name: user-service
   datasource:
-    url: jdbc:postgresql://localhost:5432/reservation-management
+    url: jdbc:postgresql://localhost:5432/OneFlatDB
     username: onesquad
     password: password
   jpa:
