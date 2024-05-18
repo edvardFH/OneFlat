@@ -1,0 +1,48 @@
+.header {
+    position: fixed;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 1.65rem;
+    width: 100%;
+    font-family: "Inter";
+    color: white;
+    height: 85px;
+    align-items: center;
+}
+
+.header .brand-nav span {
+    color: #fff ;
+    font-weight: 800;
+    font-size: 1.75em;
+}
+
+.nav-links {
+    gap: 2.5em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav-items {
+    display: flex;
+    gap: 1.0rem;
+    font-weight: 400;
+}
+
+.nav-items-auth {
+    display: flex;
+    color: #fff;
+    align-items: center;
+    gap: 1.5rem;
+    font-size: 1em;
+    font-weight: 500;
+}
+
+.nav-items-auth a:last-child {
+    padding: 0.25em 0.50em;
+    color: #09090B;
+    background-color: #fff;
+    border-radius: 8px;
+    font-weight: 500;
+    padding: 0.5em 0.85em;
+}

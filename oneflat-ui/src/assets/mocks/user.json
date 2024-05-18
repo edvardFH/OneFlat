@@ -1,0 +1,68 @@
+{
+  "posts": [
+    {
+      "id": "1",
+      "title": "a title",
+      "views": 100
+    },
+    {
+      "id": "2",
+      "title": "another title",
+      "views": 200
+    }
+  ],
+  "comments": [
+    {
+      "id": "1",
+      "text": "a comment about post 1",
+      "postId": "1"
+    },
+    {
+      "id": "2",
+      "text": "another comment about post 1",
+      "postId": "1"
+    }
+  ],
+  "user": [
+    {
+      "id": "1",
+      "firstname": "sofiane",
+      "lastName": "mbarki",
+      "email": "soso@yahoo.com",
+      "password": "1234",
+      "confirmPassword": "1234"
+    },
+    {
+      "id": "a16f",
+      "firstName": "qdsqd",
+      "lastName": "dqsd",
+      "email": "dsqdqd",
+      "password": "qsdq",
+      "confirmPassword": "dqsq"
+    },
+    {
+      "id": "0af6",
+      "firstName": "sqdqsdok",
+      "lastName": "",
+      "email": "",
+      "password": "",
+      "confirmPassword": ""
+    },
+    {
+      "id": "9c0f",
+      "firstName": "sqdqsdok",
+      "lastName": "",
+      "email": "",
+      "password": "",
+      "confirmPassword": ""
+    },
+    {
+      "id": "4acc",
+      "firstName": "sqdqsdok",
+      "lastName": "dsqdq",
+      "email": "",
+      "password": "",
+      "confirmPassword": ""
+    }
+  ]
+}
