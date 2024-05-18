@@ -1,6 +1,4 @@
-package com.onesquad.accommodation;
-
-import java.util.UUID;
+package com.onesquad.accommodation.dto;
 
 
 public record AccommodationRegistrationRequest(

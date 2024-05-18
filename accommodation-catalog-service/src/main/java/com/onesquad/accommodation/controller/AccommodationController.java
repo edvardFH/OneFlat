@@ -1,5 +1,8 @@
-package com.onesquad.accommodation;
+package com.onesquad.accommodation.controller;
 
+import com.onesquad.accommodation.entity.Accommodation;
+import com.onesquad.accommodation.dto.AccommodationRegistrationRequest;
+import com.onesquad.accommodation.service.AccommodationService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;

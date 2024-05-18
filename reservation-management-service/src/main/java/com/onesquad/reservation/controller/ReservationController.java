@@ -1,5 +1,7 @@
-package com.onesquad.reservation;
+package com.onesquad.reservation.controller;
 
+import com.onesquad.reservation.dto.AvailabilityCheckResponse;
+import com.onesquad.reservation.service.ReservationService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;

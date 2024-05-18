@@ -1,4 +1,4 @@
-package com.onesquad.accommodation;
+package com.onesquad.accommodation.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

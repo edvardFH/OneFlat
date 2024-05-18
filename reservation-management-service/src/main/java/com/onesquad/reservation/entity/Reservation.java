@@ -1,4 +1,4 @@
-package com.onesquad.reservation;
+package com.onesquad.reservation.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

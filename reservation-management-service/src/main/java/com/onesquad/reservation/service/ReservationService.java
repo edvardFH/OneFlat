@@ -1,5 +1,6 @@
-package com.onesquad.reservation;
+package com.onesquad.reservation.service;
 
+import com.onesquad.reservation.repository.ReservationRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
