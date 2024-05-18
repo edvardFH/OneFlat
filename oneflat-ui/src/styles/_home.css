@@ -11,9 +11,16 @@
 
 body {
     font-family: 'Inter', sans-serif;
+
+}
+
+.home{
+    max-width: 1280px;
+    margin: 0 auto; 
 }
 
 .home-content {
+
     background-color: #fff;
     padding: 7em 0em;
     display: flex;

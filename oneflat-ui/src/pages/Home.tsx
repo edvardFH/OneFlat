@@ -1,11 +1,16 @@
+import Hero from '@/components/hero/hero'
 import Layout from '../layouts/layout'
-import MainHeader from '@/components/mainHeader/stHome'
+import HeroBanner from '@/components/heroBanner/heroBanner'
 
 const Home = () => {
     return (
         <Layout showHeader={true}>
-            <MainHeader />
+            <div className="home">
+                <Hero />
+                <HeroBanner />
+            </div>
         </Layout>
     )
 }
+
 export default Home

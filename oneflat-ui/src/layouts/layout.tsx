@@ -1,8 +1,9 @@
 import { Footer } from '@/components/footer/footer'
 import Header from '@/components/header/header'
+import { ReactNode } from 'react'
 
 interface Props {
-    children: JSX.Element
+    children: ReactNode
     showHeader?: boolean
     showFooter?: boolean
 }
