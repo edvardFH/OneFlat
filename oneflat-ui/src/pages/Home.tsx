@@ -1,10 +1,11 @@
-import Layout from "../layouts/layout";
+import Layout from '../layouts/layout'
+import MainHeader from '@/components/mainHeader/stHome'
 
 const Home = () => {
     return (
         <Layout showHeader={true}>
-            <h3>Page</h3>
+            <MainHeader />
         </Layout>
-    );
-   };
-export default Home;
+    )
+}
+export default Home

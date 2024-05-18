@@ -1,0 +1,46 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap');
+
+:root {
+    --fuschia: #09090b;
+    --button-bg: var(--fuschia);
+    --button-text-color: #fff;
+    --baby-blue: #f8faff;
+    --close-color: #09090b;
+    --close-hover: #09090b; /* Adjusted hue of the color */
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+}
+
+.home-content {
+    background-color: #fff;
+    padding: 7em 0em;
+    display: flex;
+    align-items: center;
+    gap: 4em;
+    justify-content: center;
+}
+
+.home-img img {
+    background-image: radial-gradient(#d8d8d8 2px, transparent 2px);
+    background-size: 17px 17px;
+}
+
+.home-left .home-text h1 {
+    font-family: 'Merriweather', serif;
+    font-weight: 700;
+    font-style: normal;
+    color: #091638;
+    font-size: 5em;
+}
+
+.home-left .home-text h6 {
+    max-width: 700px;
+    font-weight: 300;
+    font-size: 1.4em;
+}
+
+.home-input {
+    margin-top: 2em;
+}

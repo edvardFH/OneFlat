@@ -1,0 +1,67 @@
+.signup-page {
+    background-color: #fff;
+    height: 100vh;
+    color: #fff;
+    display: flex;
+  }
+  
+  .signup-name {
+  display: flex;
+  }
+  
+  .signup-name input {
+  margin-right: 10px;
+  }
+  
+  .signup-title {
+      padding-bottom: 20px;
+      text-align: center;
+      margin-bottom: 20px;
+  }
+  
+  .signup-form {
+    max-width: 500px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    flex: 1;
+  }
+
+  
+  .signup-form form{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+
+
+  .signup-img{
+    background-image: url("https://wallpapers.com/images/hd/modern-beautiful-house-x1yu28g8twzle26l.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: #09090b;
+    flex: 0 0 55%;
+  }
+  
+  
+  @media screen and (max-width: 991px) {
+  
+    .header {
+      padding: 0 1rem;
+    } 
+    .signup-img {
+        display: none;
+    }
+       .signup-title h1 {
+          font-size: 2em; 
+      }
+  
+      .signup-title h4 {
+          font-size: 1em;
+      }
+  }
+  
+  

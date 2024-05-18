@@ -1,6 +1,7 @@
 import { Button } from "@mui/material";
 import Layout from "../layouts/layout";
 import { FormEvent, useState } from "react";
+import React from "react";
 
 interface IUser {
     firstName: string;
@@ -41,7 +42,7 @@ const SignUp = () => {
                 </div>
                 <div className="signup-form">
                     <div className="signup-title">
-                        <h1>Welcome Home</h1>
+                        <h1>Welcome at</h1>
                     </div>  
                     <form onSubmit={handleSubmitUser}>
                         <div className="signup-name">
