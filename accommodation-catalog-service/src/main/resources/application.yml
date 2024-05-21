@@ -4,7 +4,7 @@ spring:
   application:
     name: accommodation-catalog-service
   datasource:
-    url: jdbc:postgresql://localhost:5432/accommodation-catalog
+    url: jdbc:postgresql://localhost:5432/OneFlatDB
     username: onesquad
     password: password
   jpa:
