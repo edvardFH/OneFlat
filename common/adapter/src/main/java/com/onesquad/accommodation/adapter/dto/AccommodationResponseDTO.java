@@ -12,5 +12,6 @@ public record AccommodationResponseDTO(
         int numberOfRooms,
         int numberOfBathrooms,
         int area,
-        String description
+        String description,
+        boolean isVisible
 ) {}

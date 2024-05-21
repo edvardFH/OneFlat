@@ -25,7 +25,7 @@ Base URL : `/api/v1/users`
   "password": "securepassword123",
   "firstName": "John",
   "lastName": "Doe",
-  "role": "USER"
+  "role": "CUSTOMER"
 }
 ```
 

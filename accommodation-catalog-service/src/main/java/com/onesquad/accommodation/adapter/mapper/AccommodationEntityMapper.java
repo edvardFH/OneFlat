@@ -27,7 +27,8 @@ public class AccommodationEntityMapper {
                 entity.getNumberOfRooms(),
                 entity.getNumberOfBathrooms(),
                 new Area(entity.getArea()),
-                entity.getDescription()
+                entity.getDescription(),
+                entity.isVisible()
         );
     }
 
@@ -48,7 +49,8 @@ public class AccommodationEntityMapper {
                 accommodation.numberOfRooms(),
                 accommodation.numberOfBathrooms(),
                 accommodation.area().value(),
-                accommodation.description()
+                accommodation.description(),
+                accommodation.isVisible()
         );
     }
 }

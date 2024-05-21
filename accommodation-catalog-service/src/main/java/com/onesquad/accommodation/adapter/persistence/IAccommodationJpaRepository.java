@@ -15,7 +15,8 @@ public interface IAccommodationJpaRepository extends JpaRepository<Accommodation
             "(:type IS NULL OR a.type = :type) AND " +
             "(:city IS NULL OR a.location.city like :city) AND " +
             "(:minPrice IS NULL OR a.price >= :minPrice) AND " +
-            "(:maxPrice IS NULL OR a.price <= :maxPrice)")
+            "(:maxPrice IS NULL OR a.price <= :maxPrice) AND " +
+            "a.isVisible is true ")
     List<AccommodationEntity> searchAccommodations(
             @Param("type") AccommodationType type,
             @Param("city") String city,

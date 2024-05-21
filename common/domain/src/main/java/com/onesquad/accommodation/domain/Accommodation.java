@@ -13,7 +13,8 @@ public record Accommodation(
         int numberOfRooms,
         int numberOfBathrooms,
         Area area,
-        String description
+        String description,
+        boolean isVisible
 ) {
     public Accommodation {
         if (numberOfRooms < 1) {

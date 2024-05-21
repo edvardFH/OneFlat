@@ -57,8 +57,7 @@ public class AccommodationRepository implements IAccommodationRepository {
 
         AccommodationEntity existingAccommodation = accommodationEntity.get();
         LocationEntity existingLocation = existingAccommodation.getLocation();
-
-        // Update the properties of the existing accommodation
+        
         existingAccommodation.setType(accommodation.type());
         existingLocation.setCity(accommodation.location().city());
         existingLocation.setCountry(accommodation.location().country());
@@ -69,6 +68,7 @@ public class AccommodationRepository implements IAccommodationRepository {
         existingAccommodation.setNumberOfBathrooms(accommodation.numberOfBathrooms());
         existingAccommodation.setArea(accommodation.area().value());
         existingAccommodation.setDescription(accommodation.description());
+        existingAccommodation.setVisible(accommodation.isVisible());
 
         return AccommodationEntityMapper.toDomain(
                 jpaAccommodationRepository.save(existingAccommodation), accommodation.owner()

@@ -5,6 +5,8 @@ import com.onesquad.user.adapter.persistence.UserEntity;
 import com.onesquad.accommodation.domain.AccommodationType;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+
 import java.util.UUID;
 
 @Entity
@@ -35,4 +37,5 @@ public class AccommodationEntity {
     private int numberOfBathrooms;
     private int area;
     private String description;
+    private boolean isVisible;
 }

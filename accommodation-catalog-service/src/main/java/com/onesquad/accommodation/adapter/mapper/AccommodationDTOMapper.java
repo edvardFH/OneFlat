@@ -33,7 +33,8 @@ public class AccommodationDTOMapper {
                 dto.numberOfRooms(),
                 dto.numberOfBathrooms(),
                 new Area(dto.area()),
-                dto.description()
+                dto.description(),
+                dto.isVisible()
         );
     }
 
@@ -55,7 +56,8 @@ public class AccommodationDTOMapper {
                 dto.numberOfRooms(),
                 dto.numberOfBathrooms(),
                 new Area(dto.area()),
-                dto.description()
+                dto.description(),
+                dto.isVisible()
         );
     }
 
@@ -75,7 +77,8 @@ public class AccommodationDTOMapper {
                 accommodation.numberOfRooms(),
                 accommodation.numberOfBathrooms(),
                 accommodation.area().value(),
-                accommodation.description()
+                accommodation.description(),
+                accommodation.isVisible()
         );
     }
 }

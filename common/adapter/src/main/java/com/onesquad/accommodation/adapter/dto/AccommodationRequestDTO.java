@@ -7,5 +7,6 @@ public record AccommodationRequestDTO(
         int numberOfRooms,
         int numberOfBathrooms,
         int area,
-        String description
+        String description,
+        boolean isVisible
 ) {}
