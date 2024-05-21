@@ -58,7 +58,6 @@ Base URL : `/api/v1/users`
 
 ### Accommodation Service
 
-Base URL : `/api/v1/users`
 
 #### 1. Créer une accommodation
 - **URL** : `/api/v1/users/{ownerId}/accommodations`
@@ -79,7 +78,8 @@ Base URL : `/api/v1/users`
   "numberOfRooms": 3,
   "numberOfBathrooms": 2,
   "area": 75,
-  "description": "A spacious apartment in the heart of Paris."
+  "description": "A spacious apartment in the heart of Paris.",
+  "isVisible": false
 }
 ```
 
@@ -107,7 +107,8 @@ Base URL : `/api/v1/users`
   "numberOfRooms": 3,
   "numberOfBathrooms": 2,
   "area": 75,
-  "description": "A spacious apartment in the heart of Paris."
+  "description": "A spacious apartment in the heart of Paris.",
+  "isVisible": true
 }
 ```
 
@@ -115,6 +116,7 @@ Base URL : `/api/v1/users`
     - **200 OK** : L'accommodation a été mise à jour avec succès.
     - **400 Bad Request** : Données invalides.
     - **404 Not Found** : Accommodation ou utilisateur non trouvé.
+
 
 #### 3. Obtenir les accommodations par ID de propriétaire
 - **URL** : `/api/v1/users/{ownerId}/accommodations`
@@ -124,16 +126,18 @@ Base URL : `/api/v1/users`
     - **200 OK** : Liste des accommodations.
     - **404 Not Found** : Utilisateur non trouvé.
 
+
 #### 4. Obtenir une accommodation par ID
-- **URL** : `/api/v1/users/{ownerId}/accommodations/{id}`
+- **URL** : `/api/v1/accommodations/{id}`
 - **Méthode HTTP** : GET
 - **Description** : Récupère une accommodation spécifique par son ID.
 - **Réponses** :
     - **200 OK** : Détails de l'accommodation.
     - **404 Not Found** : Accommodation ou utilisateur non trouvé.
 
+
 #### 5. Rechercher des accommodations
-- **URL** : `/api/v1/users/{ownerId}/accommodations/search`
+- **URL** : `/api/v1/accommodations/search`
 - **Méthode HTTP** : GET
 - **Description** : Recherche des accommodations selon différents critères.
 - **Paramètres de requête** :
@@ -144,3 +148,12 @@ Base URL : `/api/v1/users`
 - **Réponses** :
     - **200 OK** : Liste des accommodations correspondant aux critères de recherche.
     - **400 Bad Request** : Critères de recherche invalides.
+
+
+#### 6. Vérifier la visibilité d'un logement
+- **URL** : `/api/v1/accommodations/{id}/is-visible`
+- **Méthode HTTP** : GET
+- **Description** : Vérifie si un logement est visible.
+- **Réponses** :
+  - **200 OK** : Retourne `{"isVisible": true}` ou `{"isVisible": false}`.
+  - **404 Not Found** : Logement non trouvé.

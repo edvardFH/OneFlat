@@ -1,6 +1,7 @@
 package com.onesquad.accommodation.application.service;
 
 import com.onesquad.accommodation.application.exception.InvalidSearchCriteriaException;
+import com.onesquad.accommodation.application.exception.NotFoundException;
 import com.onesquad.accommodation.application.repository.IAccommodationRepository;
 import com.onesquad.accommodation.domain.Accommodation;
 import com.onesquad.accommodation.domain.AccommodationType;
@@ -59,5 +60,15 @@ public class AccommodationService {
                 Optional.ofNullable(city),
                 Optional.ofNullable(minimumPrice),
                 Optional.ofNullable(maximumPrice));
+    }
+
+
+    public boolean isAccommodationVisible(UUID id) {
+        Optional<Accommodation> accommodation = accommodationRepository.findById(id);
+        if (accommodation.isPresent()) {
+            return accommodation.get().isVisible();
+        }
+
+        throw new NotFoundException("Accommodation with id " + id + " is not found");
     }
 }
