@@ -1,19 +1,11 @@
 package com.onesquad.accommodation.application.service;
 
-
-import com.onesquad.accommodation.adapter.dto.AccommodationRequestDTO;
-import com.onesquad.accommodation.adapter.mapper.AccommodationDTOMapper;
 import com.onesquad.accommodation.application.exception.InvalidSearchCriteriaException;
-import com.onesquad.accommodation.application.exception.NotFoundException;
 import com.onesquad.accommodation.application.repository.IAccommodationRepository;
 import com.onesquad.accommodation.domain.Accommodation;
 import com.onesquad.accommodation.domain.AccommodationType;
 import com.onesquad.accommodation.domain.Price;
-import com.onesquad.user.adapter.dto.UserResponseDTO;
-import com.onesquad.user.adapter.mapper.UserDTOMapper;
-import com.onesquad.user.domain.User;
 import lombok.AllArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -25,8 +17,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class AccommodationService {
 
-    private IAccommodationRepository accommodationRepository;
-    private final RestTemplate restTemplate;
+    private final IAccommodationRepository accommodationRepository;
 
     public Optional<Accommodation> getAccommodationById(UUID id) {
         return accommodationRepository.findById(id);
@@ -36,30 +27,12 @@ public class AccommodationService {
         return accommodationRepository.findByOwnerId(ownerId);
     }
 
-    private User getUserFromUserService(UUID ownerId) throws NotFoundException {
-        String url = "http://USER-SERVICE/api/v1/users/{ownerId}";
-        ResponseEntity<UserResponseDTO> response = restTemplate.getForEntity(
-                url,
-                UserResponseDTO.class,
-                ownerId);
-
-        if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
-            return UserDTOMapper.toDomain(response.getBody());
-        } else {
-            throw new NotFoundException("User with id " + ownerId + " not found");
-        }
-    }
-
-    public Accommodation createAccommodation(AccommodationRequestDTO dto, UUID ownerId) throws NotFoundException {
-        User owner = getUserFromUserService(ownerId);
-        Accommodation accommodation = AccommodationDTOMapper.toDomain(dto, owner);
+    public Accommodation createAccommodation(Accommodation accommodation) {
         return accommodationRepository.save(accommodation);
     }
 
-    public Accommodation updateAccommodation(AccommodationRequestDTO dto, UUID id, UUID ownerId) throws NotFoundException {
-        User owner = getUserFromUserService(ownerId);
-        Accommodation accommodation = AccommodationDTOMapper.toDomain(dto, id, owner);
-        return accommodationRepository.update(accommodation);
+    public Accommodation updateAccommodation(Accommodation accommodation) {
+        return accommodationRepository.save(accommodation);
     }
 
     public List<Accommodation> searchAccommodations(String type, String city, Double minPrice, Double maxPrice)
