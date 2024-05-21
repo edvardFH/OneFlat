@@ -2,7 +2,6 @@ package com.onesquad.accommodation.application.service;
 
 
 import com.onesquad.accommodation.adapter.dto.AccommodationRequestDTO;
-import com.onesquad.accommodation.adapter.dto.AccommodationResponseDTO;
 import com.onesquad.accommodation.adapter.mapper.AccommodationDTOMapper;
 import com.onesquad.accommodation.application.exception.InvalidSearchCriteriaException;
 import com.onesquad.accommodation.application.exception.NotFoundException;
@@ -68,6 +67,9 @@ public class AccommodationService {
         if (type == null && city == null && minPrice == null && maxPrice == null) {
             throw new InvalidSearchCriteriaException("At least one search criterion must be provided.");
         }
+        if (minPrice != null && maxPrice != null && minPrice > maxPrice) {
+            throw new InvalidSearchCriteriaException("Minimum price must be lower than maximum price.");
+        }
 
         AccommodationType accommodationType = type != null
                 ? Enum.valueOf(AccommodationType.class, type)
@@ -79,6 +81,10 @@ public class AccommodationService {
                 ? new Price(maxPrice)
                 : null;
 
-        return accommodationRepository.searchAccommodations(accommodationType, city, minimumPrice, maximumPrice);
+        return accommodationRepository.searchAccommodations(
+                Optional.ofNullable(accommodationType),
+                Optional.ofNullable(city),
+                Optional.ofNullable(minimumPrice),
+                Optional.ofNullable(maximumPrice));
     }
 }

@@ -76,12 +76,16 @@ public class AccommodationRepository implements IAccommodationRepository {
     }
 
     @Override
-    public List<Accommodation> searchAccommodations(AccommodationType type, String city, Price minPrice, Price maxPrice) {
+    public List<Accommodation> searchAccommodations(
+            Optional<AccommodationType> type,
+            Optional<String> city,
+            Optional<Price> minPrice,
+            Optional<Price> maxPrice) {
         return jpaAccommodationRepository.searchAccommodations(
-                        type.toString(),
-                        city,
-                        minPrice != null ? minPrice.value() : null,
-                        maxPrice != null ? maxPrice.value() : null
+                        type.orElse(null),
+                        city.orElse(null),
+                        minPrice.map(Price::value).orElse(null),
+                        maxPrice.map(Price::value).orElse(null)
                 ).stream()
                 .map(entity -> {
                     UserEntity userEntity = entity.getOwner();

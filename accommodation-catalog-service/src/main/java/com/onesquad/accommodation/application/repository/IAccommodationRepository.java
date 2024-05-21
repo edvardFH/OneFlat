@@ -13,5 +13,9 @@ public interface IAccommodationRepository {
     List<Accommodation> findByOwnerId(UUID ownerId);
     Accommodation save(Accommodation accommodation);
     Accommodation update(Accommodation accommodation);
-    List<Accommodation> searchAccommodations(AccommodationType type, String city, Price minPrice, Price maxPrice);
+    List<Accommodation> searchAccommodations(
+            Optional<AccommodationType> type,
+            Optional<String> city,
+            Optional<Price> minPrice,
+            Optional<Price> maxPrice);
 }
