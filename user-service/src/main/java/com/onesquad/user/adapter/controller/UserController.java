@@ -36,7 +36,7 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<?> getUserById(@PathVariable UUID userId) {
+    public ResponseEntity<?> getUserById(@PathVariable("userId") UUID userId) {
         try {
             Optional<User> user = userService.getUserById(userId);
             return user.map(value -> ResponseEntity.ok(UserDTOMapper.toDTO(value)))

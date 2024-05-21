@@ -2,9 +2,11 @@ package com.onesquad.accommodation.adapter.persistence;
 
 import com.onesquad.accommodation.adapter.mapper.AccommodationEntityMapper;
 import com.onesquad.accommodation.adapter.mapper.UserEntityMapper;
+import com.onesquad.accommodation.application.exception.NotFoundException;
 import com.onesquad.accommodation.application.repository.IAccommodationRepository;
 import com.onesquad.accommodation.domain.Accommodation;
 import com.onesquad.accommodation.domain.AccommodationType;
+import com.onesquad.accommodation.domain.Location;
 import com.onesquad.accommodation.domain.Price;
 import com.onesquad.user.adapter.persistence.UserEntity;
 import lombok.AllArgsConstructor;
@@ -43,6 +45,34 @@ public class AccommodationRepository implements IAccommodationRepository {
     public Accommodation save(Accommodation accommodation) {
         AccommodationEntity entity = AccommodationEntityMapper.toEntity(accommodation, UserEntityMapper.toEntity(accommodation.owner()));
         return AccommodationEntityMapper.toDomain(jpaAccommodationRepository.save(entity), accommodation.owner());
+    }
+
+    @Override
+    public Accommodation update(Accommodation accommodation) {
+        Optional<AccommodationEntity> accommodationEntity = jpaAccommodationRepository.findById(accommodation.id());
+
+        if (accommodationEntity.isEmpty()) {
+            throw new NotFoundException("Accommodation with id " + accommodation.id() + " not found");
+        }
+
+        AccommodationEntity existingAccommodation = accommodationEntity.get();
+        LocationEntity existingLocation = existingAccommodation.getLocation();
+
+        // Update the properties of the existing accommodation
+        existingAccommodation.setType(accommodation.type());
+        existingLocation.setCity(accommodation.location().city());
+        existingLocation.setCountry(accommodation.location().country());
+        existingLocation.setStreet(accommodation.location().street());
+        existingLocation.setPostalCode(accommodation.location().postalCode());
+        existingAccommodation.setPrice(accommodation.price().value());
+        existingAccommodation.setNumberOfRooms(accommodation.numberOfRooms());
+        existingAccommodation.setNumberOfBathrooms(accommodation.numberOfBathrooms());
+        existingAccommodation.setArea(accommodation.area().value());
+        existingAccommodation.setDescription(accommodation.description());
+
+        return AccommodationEntityMapper.toDomain(
+                jpaAccommodationRepository.save(existingAccommodation), accommodation.owner()
+        );
     }
 
     @Override

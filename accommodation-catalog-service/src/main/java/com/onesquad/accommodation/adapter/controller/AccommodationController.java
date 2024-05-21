@@ -25,7 +25,7 @@ public class AccommodationController {
 
     @PostMapping("/{ownerId}/accommodations")
     public ResponseEntity<?> createAccommodation(
-            @PathVariable UUID ownerId,
+            @PathVariable("ownerId") UUID ownerId,
             @RequestBody AccommodationRequestDTO accommodationCreateDTO) {
         try {
             Accommodation accommodation = accommodationService.createAccommodation(accommodationCreateDTO, ownerId);
@@ -38,11 +38,11 @@ public class AccommodationController {
 
     @PutMapping("/{ownerId}/accommodations/{id}")
     public ResponseEntity<?> updateAccommodation(
-            @PathVariable UUID ownerId,
-            @PathVariable UUID id,
+            @PathVariable("ownerId") UUID ownerId,
+            @PathVariable("id") UUID id,
             @RequestBody AccommodationRequestDTO accommodationUpdateDTO) {
         try {
-            Accommodation accommodation = accommodationService.updateAccommodation(accommodationUpdateDTO, ownerId);
+            Accommodation accommodation = accommodationService.updateAccommodation(accommodationUpdateDTO, id, ownerId);
             AccommodationResponseDTO responseDTO = AccommodationDTOMapper.toDTO(accommodation);
             return ResponseEntity.ok(responseDTO);
         } catch (IllegalArgumentException e) {
@@ -51,7 +51,7 @@ public class AccommodationController {
     }
 
     @GetMapping("/{ownerId}/accommodations")
-    public ResponseEntity<?> getAccommodationsByOwnerId(@PathVariable UUID ownerId) {
+    public ResponseEntity<?> getAccommodationsByOwnerId(@PathVariable("ownerId") UUID ownerId) {
         List<Accommodation> accommodations = accommodationService.getAccommodationsByOwnerId(ownerId);
         List<AccommodationResponseDTO> responseDTOs = accommodations.stream()
                 .map(AccommodationDTOMapper::toDTO)
@@ -60,7 +60,7 @@ public class AccommodationController {
     }
 
     @GetMapping("/{ownerId}/accommodations/{id}")
-    public ResponseEntity<?> getAccommodationById(@PathVariable UUID ownerId, @PathVariable UUID id) {
+    public ResponseEntity<?> getAccommodationById(@PathVariable("ownerId") UUID ownerId, @PathVariable("id") UUID id) {
         Optional<Accommodation> accommodation = accommodationService.getAccommodationById(id);
         return accommodation.map(value -> ResponseEntity.ok(AccommodationDTOMapper.toDTO(value)))
                 .orElseGet(() -> ResponseEntity.notFound().build());

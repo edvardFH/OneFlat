@@ -22,6 +22,18 @@ public class UserDTOMapper {
         );
     }
 
+    public static User toDomain(UserResponseDTO dto) {
+        return new User(
+                dto.id(),
+                new Email(dto.email()),
+                new PhoneNumber(dto.phoneNumber()),
+                null,
+                dto.firstName(),
+                dto.lastName(),
+                Role.valueOf(dto.role())
+        );
+    }
+
     public static UserResponseDTO toDTO(User user) {
         return new UserResponseDTO(
                 user.id(),

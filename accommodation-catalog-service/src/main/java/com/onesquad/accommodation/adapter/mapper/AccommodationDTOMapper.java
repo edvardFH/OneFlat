@@ -10,6 +10,14 @@ import java.util.UUID;
 
 public class AccommodationDTOMapper {
     public static Accommodation toDomain(AccommodationRequestDTO dto, User owner) {
+        return toDomainHelper(dto, null, owner);
+    }
+
+    public static Accommodation toDomain(AccommodationRequestDTO dto, UUID id, User owner) {
+        return toDomainHelper(dto, id, owner);
+    }
+
+    private static Accommodation toDomainHelper(AccommodationRequestDTO dto, UUID id, User owner) {
         Location location = new Location(
                 dto.location().street(),
                 dto.location().city(),
@@ -17,7 +25,7 @@ public class AccommodationDTOMapper {
                 dto.location().country()
         );
         return new Accommodation(
-                null,
+                id,
                 owner,
                 AccommodationType.valueOf(dto.type()),
                 location,
@@ -28,6 +36,8 @@ public class AccommodationDTOMapper {
                 dto.description()
         );
     }
+
+
 
     public static Accommodation toDomain(AccommodationResponseDTO dto, User owner) {
         Location location = new Location(
