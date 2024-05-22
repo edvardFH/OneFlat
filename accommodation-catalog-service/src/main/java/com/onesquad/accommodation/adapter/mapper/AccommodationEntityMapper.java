@@ -7,8 +7,6 @@ import com.onesquad.accommodation.domain.*;
 import com.onesquad.accommodation.adapter.persistence.AccommodationEntity;
 import com.onesquad.user.domain.User;
 
-import java.util.UUID;
-
 public class AccommodationEntityMapper {
 
     public static Accommodation toDomain(AccommodationEntity entity, User owner) {
@@ -28,7 +26,8 @@ public class AccommodationEntityMapper {
                 entity.getNumberOfBathrooms(),
                 new Area(entity.getArea()),
                 entity.getDescription(),
-                entity.isVisible()
+                entity.isVisible(),
+                AvailabilityMapper.toDomainSetFromEntity(entity.getAvailabilities())
         );
     }
 
@@ -50,7 +49,8 @@ public class AccommodationEntityMapper {
                 accommodation.numberOfBathrooms(),
                 accommodation.area().value(),
                 accommodation.description(),
-                accommodation.isVisible()
+                accommodation.isVisible(),
+                AvailabilityMapper.toEntitySet(accommodation.availabilities(), accommodation.id())
         );
     }
 }

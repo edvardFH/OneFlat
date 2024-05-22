@@ -5,11 +5,12 @@ import com.onesquad.accommodation.application.exception.NotFoundException;
 import com.onesquad.accommodation.application.repository.IAccommodationRepository;
 import com.onesquad.accommodation.domain.Accommodation;
 import com.onesquad.accommodation.domain.AccommodationType;
+import com.onesquad.accommodation.domain.Availability;
 import com.onesquad.accommodation.domain.Price;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -70,5 +71,41 @@ public class AccommodationService {
         }
 
         throw new NotFoundException("Accommodation with id " + id + " is not found");
+    }
+
+    public Availability addAvailability(UUID accommodationId, Availability availability) {
+        Accommodation accommodation = accommodationRepository.findById(accommodationId)
+                .orElseThrow(() -> new NotFoundException("Accommodation not found"));
+
+        accommodation.addAvailability(availability);
+
+        accommodationRepository.save(accommodation);
+        return availability;
+    }
+
+    public Availability updateAvailability(
+            UUID accommodationId, Availability oldAvailability, Availability newAvailability) {
+        Accommodation accommodation = accommodationRepository.findById(accommodationId)
+                .orElseThrow(() -> new NotFoundException("Accommodation not found"));
+
+        Availability existingAvailability = accommodation.getAvailability(oldAvailability)
+                .orElseThrow(() -> new NotFoundException("Availability not found"));
+
+        accommodation.removeAvailability(existingAvailability);
+        accommodation.addAvailability(newAvailability);
+
+        accommodationRepository.save(accommodation);
+        return newAvailability;
+    }
+
+    public void deleteAvailability(UUID accommodationId, Availability availability) {
+        Accommodation accommodation = accommodationRepository.findById(accommodationId)
+                .orElseThrow(() -> new NotFoundException("Accommodation not found"));
+
+        Availability availabilityToDelete = accommodation.getAvailability(availability)
+                .orElseThrow(() -> new NotFoundException("Availability not found"));
+
+        accommodation.removeAvailability(availabilityToDelete);
+        accommodationRepository.save(accommodation);
     }
 }

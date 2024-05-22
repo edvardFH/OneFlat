@@ -1,6 +1,6 @@
 package com.onesquad.user.adapter.persistence;
 
-import com.onesquad.accommodation.adapter.mapper.UserEntityMapper;
+import com.onesquad.user.adapter.mapper.UserEntityMapper;
 import com.onesquad.user.application.repository.IUserRepository;
 import com.onesquad.user.domain.User;
 import lombok.AllArgsConstructor;
@@ -18,6 +18,7 @@ public class UserRepository implements IUserRepository {
     @Override
     public Optional<User> findById(UUID id) {
         Optional<UserEntity> userEntity = userPersistenceRepository.findById(id);
+
         return userEntity.map(UserEntityMapper::toDomain);
     }
 

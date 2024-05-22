@@ -1,5 +1,7 @@
 package com.onesquad.accommodation.adapter.dto;
 
+import java.util.Set;
+
 public record AccommodationRequestDTO(
         String type,
         LocationDTO location,
@@ -8,5 +10,6 @@ public record AccommodationRequestDTO(
         int numberOfBathrooms,
         int area,
         String description,
-        boolean isVisible
+        boolean isVisible,
+        Set<AvailabilityDTO> availabilities
 ) {}

@@ -1,15 +1,16 @@
 package com.onesquad.accommodation.adapter.persistence;
 
 import com.onesquad.accommodation.adapter.mapper.AccommodationEntityMapper;
-import com.onesquad.accommodation.adapter.mapper.UserEntityMapper;
+import com.onesquad.accommodation.adapter.mapper.AvailabilityMapper;
+import com.onesquad.user.adapter.mapper.UserEntityMapper;
 import com.onesquad.accommodation.application.exception.NotFoundException;
 import com.onesquad.accommodation.application.repository.IAccommodationRepository;
 import com.onesquad.accommodation.domain.Accommodation;
 import com.onesquad.accommodation.domain.AccommodationType;
-import com.onesquad.accommodation.domain.Location;
 import com.onesquad.accommodation.domain.Price;
 import com.onesquad.user.adapter.persistence.UserEntity;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -19,12 +20,14 @@ import java.util.stream.Collectors;
 
 @Repository
 @AllArgsConstructor
+@Slf4j
 public class AccommodationRepository implements IAccommodationRepository {
 
     private IAccommodationJpaRepository jpaAccommodationRepository;
 
     @Override
     public Optional<Accommodation> findById(UUID id) {
+        jpaAccommodationRepository.forceLoadAvailabilities(id);
         return jpaAccommodationRepository.findById(id).map(entity -> {
             UserEntity userEntity = entity.getOwner();
             return AccommodationEntityMapper.toDomain(entity, UserEntityMapper.toDomain(userEntity));
@@ -35,6 +38,7 @@ public class AccommodationRepository implements IAccommodationRepository {
     public List<Accommodation> findByOwnerId(UUID ownerId) {
         return jpaAccommodationRepository.findByOwnerId(ownerId).stream()
                 .map(entity -> {
+                    jpaAccommodationRepository.forceLoadAvailabilities(entity.getId());
                     UserEntity userEntity = entity.getOwner();
                     return AccommodationEntityMapper.toDomain(entity, UserEntityMapper.toDomain(userEntity));
                 })
@@ -57,7 +61,7 @@ public class AccommodationRepository implements IAccommodationRepository {
 
         AccommodationEntity existingAccommodation = accommodationEntity.get();
         LocationEntity existingLocation = existingAccommodation.getLocation();
-        
+
         existingAccommodation.setType(accommodation.type());
         existingLocation.setCity(accommodation.location().city());
         existingLocation.setCountry(accommodation.location().country());
@@ -69,6 +73,9 @@ public class AccommodationRepository implements IAccommodationRepository {
         existingAccommodation.setArea(accommodation.area().value());
         existingAccommodation.setDescription(accommodation.description());
         existingAccommodation.setVisible(accommodation.isVisible());
+        existingAccommodation.setAvailabilities(
+                AvailabilityMapper.toEntitySet(accommodation.availabilities(), accommodation.id())
+        );
 
         return AccommodationEntityMapper.toDomain(
                 jpaAccommodationRepository.save(existingAccommodation), accommodation.owner()
@@ -88,6 +95,7 @@ public class AccommodationRepository implements IAccommodationRepository {
                         maxPrice.map(Price::value).orElse(null)
                 ).stream()
                 .map(entity -> {
+                    jpaAccommodationRepository.forceLoadAvailabilities(entity.getId());
                     UserEntity userEntity = entity.getOwner();
                     return AccommodationEntityMapper.toDomain(entity, UserEntityMapper.toDomain(userEntity));
                 })
