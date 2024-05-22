@@ -7,8 +7,6 @@ import com.onesquad.accommodation.domain.*;
 import com.onesquad.accommodation.adapter.persistence.AccommodationEntity;
 import com.onesquad.user.domain.User;
 
-import java.util.UUID;
-
 public class AccommodationEntityMapper {
 
     public static Accommodation toDomain(AccommodationEntity entity, User owner) {

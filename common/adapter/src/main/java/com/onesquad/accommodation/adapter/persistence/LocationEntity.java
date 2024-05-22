@@ -9,8 +9,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "locations")
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class LocationEntity {

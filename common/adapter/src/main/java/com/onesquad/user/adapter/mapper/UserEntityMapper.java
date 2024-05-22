@@ -1,4 +1,4 @@
-package com.onesquad.accommodation.adapter.mapper;
+package com.onesquad.user.adapter.mapper;
 
 import com.onesquad.user.adapter.persistence.UserEntity;
 import com.onesquad.user.domain.Email;

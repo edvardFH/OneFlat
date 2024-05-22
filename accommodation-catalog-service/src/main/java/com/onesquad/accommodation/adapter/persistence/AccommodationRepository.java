@@ -1,15 +1,15 @@
 package com.onesquad.accommodation.adapter.persistence;
 
 import com.onesquad.accommodation.adapter.mapper.AccommodationEntityMapper;
-import com.onesquad.accommodation.adapter.mapper.UserEntityMapper;
-import com.onesquad.accommodation.application.exception.NotFoundException;
+import com.onesquad.common.application.exception.NotFoundException;
 import com.onesquad.accommodation.application.repository.IAccommodationRepository;
 import com.onesquad.accommodation.domain.Accommodation;
 import com.onesquad.accommodation.domain.AccommodationType;
-import com.onesquad.accommodation.domain.Location;
 import com.onesquad.accommodation.domain.Price;
+import com.onesquad.user.adapter.mapper.UserEntityMapper;
 import com.onesquad.user.adapter.persistence.UserEntity;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 
 @Repository
 @AllArgsConstructor
+@Slf4j
 public class AccommodationRepository implements IAccommodationRepository {
 
     private IAccommodationJpaRepository jpaAccommodationRepository;
@@ -57,7 +58,7 @@ public class AccommodationRepository implements IAccommodationRepository {
 
         AccommodationEntity existingAccommodation = accommodationEntity.get();
         LocationEntity existingLocation = existingAccommodation.getLocation();
-        
+
         existingAccommodation.setType(accommodation.type());
         existingLocation.setCity(accommodation.location().city());
         existingLocation.setCountry(accommodation.location().country());
@@ -94,4 +95,3 @@ public class AccommodationRepository implements IAccommodationRepository {
                 .collect(Collectors.toList());
     }
 }
-

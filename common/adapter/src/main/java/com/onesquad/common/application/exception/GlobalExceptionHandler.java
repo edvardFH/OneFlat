@@ -1,7 +1,5 @@
-package com.onesquad.accommodation.adapter.controller;
+package com.onesquad.common.application.exception;
 
-import com.onesquad.accommodation.application.exception.NotFoundException;
-import com.onesquad.accommodation.application.exception.InvalidSearchCriteriaException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

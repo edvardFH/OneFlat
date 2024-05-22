@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface IAccommodationJpaRepository extends JpaRepository<AccommodationEntity, UUID> {
+
     List<AccommodationEntity> findByOwnerId(UUID ownerId);
 
     @Query("SELECT a FROM AccommodationEntity a WHERE " +

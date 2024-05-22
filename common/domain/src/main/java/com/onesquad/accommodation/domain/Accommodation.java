@@ -2,6 +2,10 @@ package com.onesquad.accommodation.domain;
 
 import com.onesquad.user.domain.User;
 
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 public record Accommodation(
