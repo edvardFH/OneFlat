@@ -2,9 +2,10 @@
 
 ## Introduction
 
-Ce projet est une application de location de logement basée sur l’architecture des microservices. Il comprend deux principaux services :
+Ce projet est une application de location de logement basée sur l’architecture des microservices. Il comprend trois principaux services :
 1. **Accommodation Service** : Gère les informations sur les logements.
 2. **User Service** : Gère les informations sur les utilisateurs.
+3. **Reservation Management Serice** : Gère les réservations et la disponibilité des logements.
 
 ## Endpoints
 
