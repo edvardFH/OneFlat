@@ -2,7 +2,7 @@ package com.onesquad.reservation.adapter.config;
 
 import com.onesquad.accommodation.adapter.client.AccommodationServiceClient;
 import com.onesquad.accommodation.adapter.client.IAccommodationServiceClient;
-import com.onesquad.common.application.exception.GlobalExceptionHandler;
+import com.onesquad.common.controller.GlobalExceptionHandler;
 import com.onesquad.user.adapter.client.IUserServiceClient;
 import com.onesquad.user.adapter.client.UserServiceClient;
 import org.springframework.boot.autoconfigure.domain.EntityScan;

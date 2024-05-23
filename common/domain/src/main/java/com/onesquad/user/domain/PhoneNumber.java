@@ -1,5 +1,7 @@
 package com.onesquad.user.domain;
 
+import com.onesquad.common.exception.DomainRuleViolated;
+
 import java.util.regex.Pattern;
 
 public record PhoneNumber(String value) {
@@ -9,7 +11,7 @@ public record PhoneNumber(String value) {
 
     public PhoneNumber {
         if (!isPhoneNumber(value)) {
-            throw new IllegalArgumentException("Invalid phone number format");
+            throw new DomainRuleViolated("Invalid phone number format");
         }
     }
 

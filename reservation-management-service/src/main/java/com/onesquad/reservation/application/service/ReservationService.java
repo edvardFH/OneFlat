@@ -1,14 +1,13 @@
 package com.onesquad.reservation.application.service;
 
 
-import com.onesquad.accommodation.adapter.client.IAccommodationServiceClient;
-import com.onesquad.common.application.exception.NotFoundException;
+import com.onesquad.common.exception.OverlappingReservationException;
 import com.onesquad.reservation.application.repository.IReservationRepository;
 import com.onesquad.reservation.domain.Reservation;
-import com.onesquad.user.adapter.client.IUserServiceClient;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -18,21 +17,16 @@ import java.util.UUID;
 public class ReservationService {
 
     private final IReservationRepository reservationRepository;
-    private final IAccommodationServiceClient accommodationServiceClient;
-    private final IUserServiceClient userServiceClient;
 
 
     public Reservation createReservation(Reservation reservation) {
-        if (accommodationServiceClient.getAccommodationById(reservation.accommodation().id()).isEmpty()) {
-            throw new NotFoundException("Accommodation not found");
+        if (reservation.startDate().before(new Date())) {
+            throw new IllegalArgumentException("A reservation cannot start before the current date");
         }
-        if (userServiceClient.getUserById(reservation.user().id()).isEmpty()) {
-            throw new NotFoundException("User not found");
-        }
+        checkForOverlappingReservations(reservation);
 
         return reservationRepository.save(reservation);
     }
-
 
     public Optional<Reservation> getReservationById(UUID reservationId) {
         return reservationRepository.findById(reservationId);
@@ -50,14 +44,29 @@ public class ReservationService {
 
 
     public Reservation updateReservation(Reservation reservation) {
+        checkForOverlappingReservations(reservation);
         return reservationRepository.update(reservation);
     }
-
 
     public void deleteReservation(UUID reservationId) {
         reservationRepository.deleteById(reservationId);
     }
 
-    public boolean isAvailable(UUID reservationId) { return true; }
+
+    private void checkForOverlappingReservations(Reservation newReservation) {
+        List<Reservation> reservations = reservationRepository.findByAccommodationId(newReservation.accommodation().id());
+
+        reservations.stream()
+                .filter(reservation -> !reservation.id().equals(newReservation.id()))
+                .forEach(existingReservation -> {
+                    if (existingReservation.startDate().before(newReservation.endDate())
+                        && existingReservation.endDate().after(newReservation.startDate())
+                        || existingReservation.endDate().equals(newReservation.startDate())) {
+                        throw new OverlappingReservationException(
+                                "Reservation dates overlap with an existing reservation"
+                        );
+                    }
+                });
+    }
 }
 

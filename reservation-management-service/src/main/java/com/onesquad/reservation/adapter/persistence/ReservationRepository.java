@@ -1,7 +1,7 @@
 package com.onesquad.reservation.adapter.persistence;
 
 
-import com.onesquad.common.application.exception.NotFoundException;
+import com.onesquad.common.exception.NotFoundException;
 import com.onesquad.reservation.application.repository.IReservationRepository;
 import com.onesquad.reservation.domain.Reservation;
 import com.onesquad.reservation.adapter.mapper.ReservationMapper;

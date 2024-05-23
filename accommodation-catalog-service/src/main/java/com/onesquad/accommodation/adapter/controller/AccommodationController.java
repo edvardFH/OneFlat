@@ -3,7 +3,7 @@ package com.onesquad.accommodation.adapter.controller;
 import com.onesquad.accommodation.adapter.dto.AccommodationResponseDTO;
 import com.onesquad.accommodation.adapter.dto.IsVisibleResponseDTO;
 import com.onesquad.accommodation.adapter.mapper.AccommodationDTOMapper;
-import com.onesquad.common.application.exception.InvalidSearchCriteriaException;
+import com.onesquad.common.exception.InvalidSearchCriteriaException;
 import com.onesquad.accommodation.application.service.AccommodationService;
 import com.onesquad.accommodation.domain.Accommodation;
 import lombok.AllArgsConstructor;

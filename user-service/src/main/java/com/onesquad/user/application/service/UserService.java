@@ -1,7 +1,7 @@
 package com.onesquad.user.application.service;
 
-import com.onesquad.user.application.exception.FieldValueAlreadyUsedException;
-import com.onesquad.user.application.exception.MalformedDataException;
+import com.onesquad.common.exception.FieldValueAlreadyUsedException;
+import com.onesquad.common.exception.MalformedDataException;
 import com.onesquad.user.application.repository.IUserRepository;
 import com.onesquad.user.domain.Email;
 import com.onesquad.user.domain.PhoneNumber;

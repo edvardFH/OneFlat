@@ -1,5 +1,7 @@
 package com.onesquad.user.domain;
 
+import com.onesquad.common.exception.DomainRuleViolated;
+
 import java.util.regex.Pattern;
 
 public record Email(String value) {
@@ -9,7 +11,7 @@ public record Email(String value) {
 
     public Email {
         if (!isEmail(value)) {
-            throw new IllegalArgumentException("Invalid email format");
+            throw new DomainRuleViolated("Invalid email format");
         }
     }
 

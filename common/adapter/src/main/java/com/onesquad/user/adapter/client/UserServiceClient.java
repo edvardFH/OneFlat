@@ -1,6 +1,5 @@
 package com.onesquad.user.adapter.client;
 
-import com.onesquad.common.application.exception.NotFoundException;
 import com.onesquad.user.adapter.dto.UserResponseDTO;
 import com.onesquad.user.adapter.mapper.UserDTOMapper;
 import com.onesquad.user.domain.User;

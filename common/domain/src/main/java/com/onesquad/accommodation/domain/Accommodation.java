@@ -1,5 +1,6 @@
 package com.onesquad.accommodation.domain;
 
+import com.onesquad.common.exception.DomainRuleViolated;
 import com.onesquad.user.domain.User;
 
 import java.util.Date;
@@ -22,10 +23,10 @@ public record Accommodation(
 ) {
     public Accommodation {
         if (numberOfRooms < 1) {
-            throw new IllegalArgumentException("Number of rooms must be at least one");
+            throw new DomainRuleViolated("Number of rooms must be at least one");
         }
         if (numberOfBathrooms < 0) {
-            throw new IllegalArgumentException("Number of bathrooms cannot be negative");
+            throw new DomainRuleViolated("Number of bathrooms cannot be negative");
         }
     }
 }

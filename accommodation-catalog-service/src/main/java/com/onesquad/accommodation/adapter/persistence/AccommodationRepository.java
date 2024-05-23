@@ -1,7 +1,7 @@
 package com.onesquad.accommodation.adapter.persistence;
 
 import com.onesquad.accommodation.adapter.mapper.AccommodationEntityMapper;
-import com.onesquad.common.application.exception.NotFoundException;
+import com.onesquad.common.exception.NotFoundException;
 import com.onesquad.accommodation.application.repository.IAccommodationRepository;
 import com.onesquad.accommodation.domain.Accommodation;
 import com.onesquad.accommodation.domain.AccommodationType;

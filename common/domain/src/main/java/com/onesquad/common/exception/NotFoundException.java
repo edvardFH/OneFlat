@@ -1,4 +1,4 @@
-package com.onesquad.common.application.exception;
+package com.onesquad.common.exception;
 
 public class NotFoundException extends RuntimeException {
     public NotFoundException(String message) {
