@@ -2,9 +2,9 @@ package com.onesquad.reservation.adapter.persistence;
 
 
 import com.onesquad.common.exception.NotFoundException;
+import com.onesquad.reservation.adapter.mapper.ReservationMapper;
 import com.onesquad.reservation.application.repository.IReservationRepository;
 import com.onesquad.reservation.domain.Reservation;
-import com.onesquad.reservation.adapter.mapper.ReservationMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -39,6 +39,7 @@ public class ReservationRepository implements IReservationRepository {
         existingReservation.setComment(reservation.comment());
         existingReservation.setStartDate(reservation.startDate());
         existingReservation.setEndDate(reservation.endDate());
+        existingReservation.setStatus(reservation.status());
 
         return ReservationMapper.toDomain(reservationJpaRepository.save(existingReservation));
     }

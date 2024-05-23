@@ -4,6 +4,7 @@ package com.onesquad.reservation.application.service;
 import com.onesquad.common.exception.OverlappingReservationException;
 import com.onesquad.reservation.application.repository.IReservationRepository;
 import com.onesquad.reservation.domain.Reservation;
+import com.onesquad.reservation.domain.ReservationStatus;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -57,7 +58,8 @@ public class ReservationService {
         List<Reservation> reservations = reservationRepository.findByAccommodationId(newReservation.accommodation().id());
 
         reservations.stream()
-                .filter(reservation -> !reservation.id().equals(newReservation.id()))
+                .filter(reservation -> !reservation.id().equals(newReservation.id())
+                        || reservation.status() != ReservationStatus.APPROVED)
                 .forEach(existingReservation -> {
                     if (existingReservation.startDate().before(newReservation.endDate())
                         && existingReservation.endDate().after(newReservation.startDate())

@@ -1,6 +1,7 @@
 package com.onesquad.common.controller;
 
 import com.onesquad.common.exception.DomainRuleViolated;
+import com.onesquad.common.exception.IllegalOperationException;
 import com.onesquad.common.exception.InvalidSearchCriteriaException;
 import com.onesquad.common.exception.MalformedDataException;
 import com.onesquad.common.exception.NotFoundException;
@@ -31,5 +32,11 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleNotFoundException(Exception ex) {
         log.error(ex.toString());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(IllegalOperationException.class)
+    public ResponseEntity<String> handleIllegalOperationException(Exception ex) {
+        log.error(ex.toString());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ex.getMessage());
     }
 }
