@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/reservations")
 @CrossOrigin
 @AllArgsConstructor
 @Slf4j
@@ -24,7 +24,7 @@ public class AvailabilityController {
 
     private final AvailabilityService availabilityService;
 
-    @GetMapping("/accommodations/{accommodationId}/occupied-periods")
+    @GetMapping("/accommodation/{accommodationId}/occupied-periods")
     public List<UnavailabilityPeriodDTO> getUnavailabilityPeriods(
             @PathVariable("accommodationId")UUID accommodationId) {
         List<UnavailabilityPeriod> unavailabilityPeriods =

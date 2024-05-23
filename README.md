@@ -58,9 +58,10 @@ Base URL : `/api/v1/users`
 
 ### Accommodation Service
 
+Base URL : `/api/v1/accommodations`
 
 #### 1. Créer une accommodation
-- **URL** : `/api/v1/users/{ownerId}/accommodations`
+- **URL** : `/api/v1/accommodations/user/{ownerId}/accommodation`
 - **Méthode HTTP** : POST
 - **Description** : Crée une nouvelle accommodation pour un utilisateur spécifique.
 - **Body** : `AccommodationRequestDTO`
@@ -89,7 +90,7 @@ Base URL : `/api/v1/users`
     - **404 Not Found** : Utilisateur non trouvé.
 
 #### 2. Mettre à jour une accommodation
-- **URL** : `/api/v1/users/{ownerId}/accommodations/{id}`
+- **URL** : `/api/v1/accommodations/user/{ownerId}/accommodation/{id}`
 - **Méthode HTTP** : PUT
 - **Description** : Met à jour une accommodation existante.
 - **Body** : `AccommodationRequestDTO`
@@ -119,7 +120,7 @@ Base URL : `/api/v1/users`
 
 
 #### 3. Obtenir les accommodations par ID de propriétaire
-- **URL** : `/api/v1/users/{ownerId}/accommodations`
+- **URL** : `/api/v1/accommodations/user/{ownerId}`
 - **Méthode HTTP** : GET
 - **Description** : Récupère toutes les accommodations d'un utilisateur spécifique.
 - **Réponses** :
@@ -160,6 +161,8 @@ Base URL : `/api/v1/users`
 
 
 ### Reservation Management Service
+
+Base URL : `/api/v1/reservations`
 
 #### 1. Créer une réservation
 - **URL** : `/api/v1/reservations`
@@ -216,7 +219,7 @@ Base URL : `/api/v1/users`
 ```
 
 #### 3. Obtenir les réservations d'un logement
-- **URL** : `/api/v1/accommodations/{accommodationId}/reservations`
+- **URL** : `/api/v1/reservations/accommodation/{accommodationId}`
 - **Méthode HTTP** : GET
 - **Description** : Récupère toutes les réservations d'un logement par son ID.
 - **Réponse** : Liste de `ReservationResponseDTO`
@@ -239,7 +242,7 @@ Base URL : `/api/v1/users`
 ```
 
 #### 4. Obtenir les réservations d'un utilisateur
-- **URL** : `/api/v1/users/{userId}/reservations`
+- **URL** : `/api/v1/reservations/user/{userId}`
 - **Méthode HTTP** : GET
 - **Description** : Récupère toutes les réservations d'un utilisateur par son ID.
 - **Réponse** : Liste de `ReservationResponseDTO`
@@ -316,7 +319,7 @@ Base URL : `/api/v1/users`
 
 
 #### 10. Obtenir les périodes d'indisponibilité d'un logement
-- **URL** : `/api/v1/accommodations/{accommodationId}/occupied-periods`
+- **URL** : `/api/v1/reservations/accommodation/{accommodationId}/occupied-periods`
 - **Méthode HTTP** : GET
 - **Description** : Récupère les périodes d'indisponibilité d'un logement par son ID.
 - **Réponse** : Liste de `UnavailabilityPeriodDTO`

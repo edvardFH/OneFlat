@@ -30,7 +30,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/reservations")
 @CrossOrigin
 @AllArgsConstructor
 @Slf4j
@@ -41,7 +41,7 @@ public class ReservationController {
     private final IUserServiceClient userServiceClient;
 
 
-    @PostMapping("/reservations")
+    @PostMapping
     public ResponseEntity<ReservationResponseDTO> createReservation(@RequestBody ReservationRequestDTO request) {
         Reservation reservation = getDomainReservation(request, null);
         Reservation createdReservation = reservationService.createReservation(reservation);
@@ -51,7 +51,7 @@ public class ReservationController {
     }
 
 
-    @GetMapping("/reservations/{reservationId}")
+    @GetMapping("/{reservationId}")
     public ResponseEntity<ReservationResponseDTO> getReservationById(
             @PathVariable("reservationId") UUID reservationId) {
         Optional<Reservation> reservation = reservationService.getReservationById(reservationId);
@@ -61,7 +61,7 @@ public class ReservationController {
     }
 
 
-    @GetMapping("/accommodations/{accommodationId}/reservations")
+    @GetMapping("/accommodation/{accommodationId}")
     public ResponseEntity<List<ReservationResponseDTO>> getReservationsByAccommodationId(
             @PathVariable("accommodationId") UUID accommodationId) {
         List<Reservation> reservations = reservationService.getReservationsByAccommodationId(accommodationId);
@@ -74,7 +74,7 @@ public class ReservationController {
     }
 
 
-    @GetMapping("/users/{userId}/reservations")
+    @GetMapping("/user/{userId}")
     public ResponseEntity<List<ReservationResponseDTO>> getReservationsByUserId(
             @PathVariable("userId") UUID userId) {
         List<Reservation> reservations = reservationService.getReservationsByUserId(userId);
@@ -87,7 +87,7 @@ public class ReservationController {
     }
 
 
-    @PutMapping("/reservations/{reservationId}")
+    @PutMapping("/{reservationId}")
     public ResponseEntity<ReservationResponseDTO> updateReservation(
             @PathVariable("reservationId") UUID reservationId,
             @RequestBody ReservationRequestDTO request) {
@@ -101,7 +101,7 @@ public class ReservationController {
     }
 
 
-    @DeleteMapping("/reservations/{reservationId}")
+    @DeleteMapping("/{reservationId}")
     public ResponseEntity<Void> deleteReservation(
             @PathVariable("reservationId") UUID reservationId) {
         reservationService.deleteReservation(reservationId);

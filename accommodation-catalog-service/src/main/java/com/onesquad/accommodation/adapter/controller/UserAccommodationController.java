@@ -27,7 +27,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("api/v1/users")
+@RequestMapping("api/v1/accommodations/user")
 @CrossOrigin
 @AllArgsConstructor
 public class UserAccommodationController {
@@ -49,7 +49,7 @@ public class UserAccommodationController {
         }
     }
 
-    @PostMapping("/{ownerId}/accommodations")
+    @PostMapping("/{ownerId}/accommodation")
     public ResponseEntity<?> createAccommodation(
             @PathVariable("ownerId") UUID ownerId,
             @RequestBody AccommodationRequestDTO accommodationCreateDTO) {
@@ -66,7 +66,7 @@ public class UserAccommodationController {
         }
     }
 
-    @PutMapping("/{ownerId}/accommodations/{id}")
+    @PutMapping("/{ownerId}/accommodation/{id}")
     public ResponseEntity<?> updateAccommodation(
             @PathVariable("ownerId") UUID ownerId,
             @PathVariable("id") UUID id,
@@ -86,7 +86,7 @@ public class UserAccommodationController {
         }
     }
 
-    @GetMapping("/{ownerId}/accommodations")
+    @GetMapping("/{ownerId}")
     public ResponseEntity<?> getAccommodationsByOwnerId(@PathVariable("ownerId") UUID ownerId) {
         List<Accommodation> accommodations = accommodationService.getAccommodationsByOwnerId(ownerId);
         List<AccommodationResponseDTO> responseDTOs = accommodations.stream()

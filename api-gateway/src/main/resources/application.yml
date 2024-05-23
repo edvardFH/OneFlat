@@ -1,0 +1,39 @@
+server:
+  port: 8084
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/api/v1/users/**
+        - id: accommodation-catalog-service
+          uri: lb://ACCOMMODATION-CATALOG-SERVICE
+          predicates:
+            - Path=/api/v1/accommodations/**
+        - id: reservation-management-service
+          uri: lb://RESERVATION-MANAGEMENT-SERVICE
+          predicates:
+            - Path=/api/v1/reservations/**
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+    reactor.netty: DEBUG
+
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+    fetch-registry: true
+    register-with-eureka: true
+  instance:
+    prefer-ip-address: true
