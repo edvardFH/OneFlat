@@ -1,6 +1,7 @@
 package com.onesquad.accommodation.adapter.dto;
 
 
+import java.util.Set;
 import java.util.UUID;
 
 public record AccommodationResponseDTO(

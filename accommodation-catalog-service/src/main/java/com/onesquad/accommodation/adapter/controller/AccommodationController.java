@@ -3,12 +3,13 @@ package com.onesquad.accommodation.adapter.controller;
 import com.onesquad.accommodation.adapter.dto.AccommodationResponseDTO;
 import com.onesquad.accommodation.adapter.dto.IsVisibleResponseDTO;
 import com.onesquad.accommodation.adapter.mapper.AccommodationDTOMapper;
-import com.onesquad.accommodation.application.exception.InvalidSearchCriteriaException;
+import com.onesquad.common.exception.InvalidSearchCriteriaException;
 import com.onesquad.accommodation.application.service.AccommodationService;
 import com.onesquad.accommodation.domain.Accommodation;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +24,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("api/v1/accommodations")
 @AllArgsConstructor
+@CrossOrigin
 public class AccommodationController {
 
     private final AccommodationService accommodationService;

@@ -157,3 +157,182 @@ Base URL : `/api/v1/users`
 - **Réponses** :
   - **200 OK** : Retourne `{"isVisible": true}` ou `{"isVisible": false}`.
   - **404 Not Found** : Logement non trouvé.
+
+
+### Reservation Management Service
+
+#### 1. Créer une réservation
+- **URL** : `/api/v1/reservations`
+- **Méthode HTTP** : POST
+- **Description** : Crée une nouvelle réservation.
+- **Body** : `ReservationRequestDTO`
+
+```json
+{
+  "accommodationId": "accommodation-uuid",
+  "userId": "user-uuid",
+  "startDate": "2024-06-01T12:00:00Z",
+  "endDate": "2024-06-07T12:00:00Z",
+  "comment": "Looking forward to my stay"
+}
+```
+
+- **Réponses** :
+  - **201 Created** : Réservation créée avec succès.
+  - **400 Bad Request** : Données de réservation invalides.
+  - **404 Not Found** : Logement ou utilisateur non trouvé.
+
+```json
+{
+  "id": "123e4567-e89b-12d3-a456-426614174002",
+  "accommodationId": "123e4567-e89b-12d3-a456-426614174000",
+  "userId": "123e4567-e89b-12d3-a456-426614174001",
+  "startDate": "2024-06-01T00:00:00Z",
+  "endDate": "2024-06-10T00:00:00Z",
+  "status": "PENDING",
+  "comment": "Vacation stay"
+}
+```
+
+#### 2. Obtenir une réservation par ID
+- **URL** : `/api/v1/reservations/{reservationId}`
+- **Méthode HTTP** : GET
+- **Description** : Récupère une réservation par son ID.
+- **Réponse** : `ReservationResponseDTO`
+- **Réponses** :
+  - **200 OK** : Réservation récupérée avec succès.
+  - **404 Not Found** : Réservation non trouvée.
+
+```json
+{
+  "id": "123e4567-e89b-12d3-a456-426614174002",
+  "accommodationId": "123e4567-e89b-12d3-a456-426614174000",
+  "userId": "123e4567-e89b-12d3-a456-426614174001",
+  "startDate": "2024-06-01T00:00:00Z",
+  "endDate": "2024-06-10T00:00:00Z",
+  "status": "PENDING",
+  "comment": "Vacation stay"
+}
+```
+
+#### 3. Obtenir les réservations d'un logement
+- **URL** : `/api/v1/accommodations/{accommodationId}/reservations`
+- **Méthode HTTP** : GET
+- **Description** : Récupère toutes les réservations d'un logement par son ID.
+- **Réponse** : Liste de `ReservationResponseDTO`
+- **Réponses** :
+  - **200 OK** : Liste des réservations récupérée avec succès.
+  - **404 Not Found** : Logement non trouvé.
+
+```json 
+[
+  {
+    "id": "123e4567-e89b-12d3-a456-426614174002",
+    "accommodationId": "123e4567-e89b-12d3-a456-426614174000",
+    "userId": "123e4567-e89b-12d3-a456-426614174001",
+    "startDate": "2024-06-01T00:00:00Z",
+    "endDate": "2024-06-10T00:00:00Z",
+    "status": "PENDING",
+    "comment": "Vacation stay"
+  }
+]
+```
+
+#### 4. Obtenir les réservations d'un utilisateur
+- **URL** : `/api/v1/users/{userId}/reservations`
+- **Méthode HTTP** : GET
+- **Description** : Récupère toutes les réservations d'un utilisateur par son ID.
+- **Réponse** : Liste de `ReservationResponseDTO`
+- **Réponses** :
+  - **200 OK** : Liste des réservations récupérée avec succès.
+  - **404 Not Found** : Utilisateur non trouvé.
+
+
+
+#### 5. Mettre à jour une réservation
+- **URL** : `/api/v1/reservations/{reservationId}`
+- **Méthode HTTP** : PUT
+- **Description** : Met à jour une réservation existante.
+- **Body** : `ReservationRequestDTO`
+```json 
+{
+  "accommodationId": "123e4567-e89b-12d3-a456-426614174000",
+  "userId": "123e4567-e89b-12d3-a456-426614174001",
+  "startDate": "2024-06-05T00:00:00Z",
+  "endDate": "2024-06-15T00:00:00Z",
+  "comment": "Updated vacation stay"
+}
+```
+- **Réponses** :
+  - **200 OK** : Réservation mise à jour avec succès.
+  - **400 Bad Request** : Données de réservation invalides ou incohérentes.
+  - **404 Not Found** : Réservation, logement ou utilisateur non trouvé.
+
+
+
+#### 6. Supprimer une réservation
+- **URL** : `/api/v1/reservations/{reservationId}`
+- **Méthode HTTP** : DELETE
+- **Description** : Supprime une réservation par son ID.
+- **Réponses** :
+  - **204 No Content** : Réservation supprimée avec succès.
+  - **404 Not Found** : Réservation non trouvée.
+
+
+#### 7. Annuler une réservation
+- **URL** : `/api/v1/reservations/{reservationId}/cancel`
+- **Méthode HTTP** : PUT
+- **Description** : Annule une réservation par son ID.
+- **Réponse** : `ReservationResponseDTO`
+- **Réponses** :
+  - **200 OK** : Réservation annulée avec succès.
+  - **400 Bad Request** : Annulation invalide.
+  - **403 Forbidden** : Action interdite si la réservation a déjà été rejetée.
+  - **404 Not Found** : Réservation non trouvée.
+
+
+#### 8. Approuver une réservation
+- **URL** : `/api/v1/reservations/{reservationId}/approve`
+- **Méthode HTTP** : PUT
+- **Description** : Approuve une réservation par son ID.
+- **Réponse** : `ReservationResponseDTO`
+- **Réponses** :
+  - **200 OK** : Réservation approuvée avec succès.
+  - **400 Bad Request** : Approvement invalide.
+  - **403 Forbidden** : Action interdite si la réservation n'est pas en attente.
+  - **404 Not Found** : Réservation non trouvée.
+
+
+#### 9. Rejeter une réservation
+- **URL** : `/api/v1/reservations/{reservationId}/reject`
+- **Méthode HTTP** : PUT
+- **Description** : Rejette une réservation par son ID.
+- **Réponse** : `ReservationResponseDTO`
+- **Réponses** :
+  - **200 OK** : Réservation rejetée avec succès.
+  - **400 Bad Request** : Rejet invalide.
+  - **403 Forbidden** : Action interdite si la réservation n'est pas en attente.
+  - **404 Not Found** : Réservation non trouvée.
+
+
+#### 10. Obtenir les périodes d'indisponibilité d'un logement
+- **URL** : `/api/v1/accommodations/{accommodationId}/occupied-periods`
+- **Méthode HTTP** : GET
+- **Description** : Récupère les périodes d'indisponibilité d'un logement par son ID.
+- **Réponse** : Liste de `UnavailabilityPeriodDTO`
+- **Réponses** :
+  - **200 OK** : Liste des périodes d'indisponibilité récupérée avec succès.
+  - **404 Not Found** : Logement non trouvé.
+
+```json 
+[
+  {
+    "startDate": "2024-06-01T00:00:00Z",
+    "endDate": "2024-06-10T00:00:00Z"
+  },
+  {
+    "startDate": "2024-06-15T00:00:00Z",
+    "endDate": "2024-06-20T00:00:00Z"
+  }
+]
+```

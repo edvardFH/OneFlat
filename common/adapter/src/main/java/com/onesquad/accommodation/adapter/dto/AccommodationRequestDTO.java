@@ -1,5 +1,7 @@
 package com.onesquad.accommodation.adapter.dto;
 
+import java.util.Set;
+
 public record AccommodationRequestDTO(
         String type,
         LocationDTO location,

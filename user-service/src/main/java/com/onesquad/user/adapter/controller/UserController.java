@@ -1,8 +1,8 @@
 package com.onesquad.user.adapter.controller;
 
 import com.onesquad.user.adapter.mapper.UserDTOMapper;
-import com.onesquad.user.application.exception.FieldValueAlreadyUsedException;
-import com.onesquad.user.application.exception.MalformedDataException;
+import com.onesquad.common.exception.FieldValueAlreadyUsedException;
+import com.onesquad.common.exception.MalformedDataException;
 import com.onesquad.user.application.service.UserService;
 import com.onesquad.user.adapter.dto.UserCreateDTO;
 import com.onesquad.user.adapter.dto.UserResponseDTO;

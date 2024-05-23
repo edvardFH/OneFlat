@@ -1,14 +1,13 @@
 package com.onesquad.accommodation.application.service;
 
-import com.onesquad.accommodation.application.exception.InvalidSearchCriteriaException;
-import com.onesquad.accommodation.application.exception.NotFoundException;
+import com.onesquad.common.exception.InvalidSearchCriteriaException;
+import com.onesquad.common.exception.NotFoundException;
 import com.onesquad.accommodation.application.repository.IAccommodationRepository;
 import com.onesquad.accommodation.domain.Accommodation;
 import com.onesquad.accommodation.domain.AccommodationType;
 import com.onesquad.accommodation.domain.Price;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Optional;
@@ -33,7 +32,7 @@ public class AccommodationService {
     }
 
     public Accommodation updateAccommodation(Accommodation accommodation) {
-        return accommodationRepository.save(accommodation);
+        return accommodationRepository.update(accommodation);
     }
 
     public List<Accommodation> searchAccommodations(String type, String city, Double minPrice, Double maxPrice)

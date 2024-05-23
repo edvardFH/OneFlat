@@ -3,7 +3,7 @@ package com.onesquad.accommodation.adapter.controller;
 import com.onesquad.accommodation.adapter.dto.AccommodationRequestDTO;
 import com.onesquad.accommodation.adapter.dto.AccommodationResponseDTO;
 import com.onesquad.accommodation.adapter.mapper.AccommodationDTOMapper;
-import com.onesquad.accommodation.application.exception.NotFoundException;
+import com.onesquad.common.exception.NotFoundException;
 import com.onesquad.accommodation.application.service.AccommodationService;
 import com.onesquad.accommodation.domain.Accommodation;
 import com.onesquad.user.adapter.dto.UserResponseDTO;

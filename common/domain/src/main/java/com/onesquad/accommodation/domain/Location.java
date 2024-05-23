@@ -1,5 +1,7 @@
 package com.onesquad.accommodation.domain;
 
+import com.onesquad.common.exception.DomainRuleViolated;
+
 public record Location(
         String street,
         String city,
@@ -8,16 +10,16 @@ public record Location(
 ) {
     public Location {
         if (isNullOrEmpty(street)) {
-            throw new IllegalArgumentException("Street must not be empty");
+            throw new DomainRuleViolated("Street must not be empty");
         }
         if (isNullOrEmpty(city)) {
-            throw new IllegalArgumentException("City must not be empty");
+            throw new DomainRuleViolated("City must not be empty");
         }
         if (isNullOrEmpty(postalCode)) {
-            throw new IllegalArgumentException("Postal Code must not be empty");
+            throw new DomainRuleViolated("Postal Code must not be empty");
         }
         if (isNullOrEmpty(country)) {
-            throw new IllegalArgumentException("Country must not be empty");
+            throw new DomainRuleViolated("Country must not be empty");
         }
     }
 
