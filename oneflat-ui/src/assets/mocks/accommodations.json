@@ -1,0 +1,49 @@
+{
+  "accommodations": [
+    {
+      "type": "apartment",
+      "location": "1 Avenue des Champs-Élysées",
+      "price": 750000,
+      "bedrooms": 2,
+      "bathrooms": 1,
+      "area": 85,
+      "description": "Spacious and well-lit"
+    },
+    {
+      "type": "condo",
+      "location": "3 Boulevard Saint-Germain",
+      "price": 500000,
+      "bedrooms": 3,
+      "bathrooms": 2,
+      "area": 110,
+      "description": "Recently renovated"
+    },
+    {
+      "type": "house",
+      "location": "4 Place Vendôme",
+      "price": 950000,
+      "bedrooms": 4,
+      "bathrooms": 3,
+      "area": 200,
+      "description": "Quiet neighborhood"
+    },
+    {
+      "type": "villa",
+      "location": "5 Rue de Rivoli",
+      "price": 1200000,
+      "bedrooms": 5,
+      "bathrooms": 4,
+      "area": 300,
+      "description": "Great view"
+    },
+    {
+      "type": "apartment",
+      "location": "2 Rue de Paris",
+      "price": 600000,
+      "bedrooms": 3,
+      "bathrooms": 2,
+      "area": 130,
+      "description": "Close to public transport"
+    }
+  ]
+}
