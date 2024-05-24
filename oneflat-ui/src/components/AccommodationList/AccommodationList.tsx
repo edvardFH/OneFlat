@@ -21,7 +21,7 @@ interface Accommodation {
 }
 
 interface AccommodationListProps {
-    userId: number
+    userId: string
 }
 
 const AccommodationList: React.FC<AccommodationListProps> = ({ userId }) => {
@@ -31,7 +31,7 @@ const AccommodationList: React.FC<AccommodationListProps> = ({ userId }) => {
         const fetchAccommodations = async () => {
             try {
                 const response = await fetch(
-                    `/api/v1/accommodations/user/${userId}`
+                    `http://localhost:8080/api/v1/accommodations/user/${userId}`
                 )
                 if (!response.ok) {
                     throw new Error(

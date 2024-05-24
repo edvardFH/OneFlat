@@ -4,6 +4,8 @@
 @import './styles/_signup.css';
 @import './styles/_home.css';
 @import './styles/_offers.css';
+@import './styles/_accommodationForms.css';
+
 @import './_reset.css';
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');

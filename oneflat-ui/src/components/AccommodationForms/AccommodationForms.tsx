@@ -77,7 +77,7 @@ const AccommodationForm: React.FC<AccommodationFormProps> = ({ ownerId }) => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         const response = await fetch(
-            `/api/v1/accommodations/user/${ownerId}/accommodation`,
+            `http://localhost:8080/api/v1/accommodations/user/${ownerId}/accommodation`,
             {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -91,7 +91,10 @@ const AccommodationForm: React.FC<AccommodationFormProps> = ({ ownerId }) => {
 
     return (
         <form onSubmit={handleSubmit}>
-            <FormGroup>
+            <FormGroup
+                style={{ display: 'flex', gap: '3rem' }}
+                className="inputs"
+            >
                 {Object.keys(accommodation.location).map((key) => (
                     <TextField
                         key={key}

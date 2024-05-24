@@ -1,6 +1,8 @@
 import Box from '@mui/material/Box'
 import TextField from '@mui/material/TextField'
 import FmdGoodIcon from '@mui/icons-material/FmdGood'
+import { Button } from '@mui/material'
+
 const Hero = () => {
     return (
         <div className="home-content">
@@ -17,17 +19,22 @@ const Hero = () => {
                     </h6>
                 </div>
                 <div className="home-input">
-                    <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
-                        <FmdGoodIcon
-                            sx={{ color: 'action.active', mr: 2, my: 0.5 }}
-                        />
-                        <TextField
-                            id="input-with-sx"
-                            label="Where do you live ?"
-                            variant="standard"
-                            size="medium"
-                        />
-                    </Box>
+                    <form>
+                        <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
+                            <FmdGoodIcon
+                                sx={{ color: 'action.active', mr: 2, my: 0.5 }}
+                            />
+                            <TextField
+                                id="input-with-sx"
+                                label="Where do you live ?"
+                                variant="standard"
+                                size="medium"
+                            />
+                            <Button variant="outlined" type="submit">
+                                Search
+                            </Button>
+                        </Box>
+                    </form>
                 </div>
             </div>
             <div className="home-img">

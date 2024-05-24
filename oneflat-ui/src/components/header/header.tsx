@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom'
 
 const Header = () => {
     return (
@@ -8,11 +8,11 @@ const Header = () => {
             </div>
             <div className="nav-links">
                 <div className="nav-items-auth">
-                    <Link to={"/signup"}>Sign up</Link>
-                    <Link to={"/"}>Log in</Link>
+                    <Link to={'/signup'}>Sign up</Link>
+                    <Link to={'/login'}>Log in</Link>
                 </div>
             </div>
         </div>
-    );
-};
-export default Header;
+    )
+}
+export default Header
