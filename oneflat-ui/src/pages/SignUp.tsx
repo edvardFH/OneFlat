@@ -66,7 +66,7 @@ const SignUp = () => {
         event.preventDefault()
         try {
             const response = await fetch(
-                'http://localhost:8084/api/v1/users/register',
+                'http://localhost:8082/api/v1/users/register',
                 {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },

@@ -5,19 +5,17 @@ import AccommodationList from '@/components/AccommodationList/AccommodationList'
 import Layout from '@/layouts/layout'
 
 const Dashboard: React.FC = () => {
-    const [userId, setUserId] = useState<string>('')
+    const userId: string = '0073589d-0074-432d-958e-f511575868c7'
+    // const [userId, setUserId] = useState<string>('')
 
-    useEffect(() => {
-        // Récupérer l'userId du localStorage lors du montage du composant
-        const storedUserId = localStorage.getItem('userId')
-        if (storedUserId) {
-            setUserId(storedUserId)
-        } else {
-            console.log('No user ID found in localStorage.')
-            // Gérer le cas où aucun userId n'est trouvé, par exemple rediriger vers la page de login
-            // navigate('/login'); // Assurez-vous que `useNavigate` est utilisé si nécessaire
-        }
-    }, [])
+    // useEffect(() => {
+    //     const storedUserId = localStorage.getItem('userId')
+    //     if (storedUserId) {
+    //         setUserId(storedUserId)
+    //     } else {
+    //         console.log('No user ID found in localStorage.')
+    //     }
+    // }, [])
 
     return (
         <Layout showHeader={true}>
