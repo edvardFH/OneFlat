@@ -5,14 +5,13 @@ import {
     IconButton,
     InputAdornment,
     InputLabel,
-    MenuItem,
     OutlinedInput,
-    Select,
-    SelectChangeEvent,
     TextField,
+    Snackbar,
 } from '@mui/material'
 import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
+import { useNavigate } from 'react-router-dom' // Assurez-vous d'installer 'react-router-dom' si ce n'est pas déjà fait
 
 interface IUser {
     email: string
@@ -38,10 +37,9 @@ const SignUp = () => {
         role: RolesTypes.CUSTOMER,
     })
     const [showPassword, setShowPassword] = useState(false)
-
-    const handleSelectChange = (e: SelectChangeEvent<RolesTypes>) => {
-        setUser({ ...user, role: e.target.value as RolesTypes })
-    }
+    const [openSnackbar, setOpenSnackbar] = useState(false)
+    const [snackbarMessage, setSnackbarMessage] = useState('')
+    const navigate = useNavigate() // Pour la redirection après l'inscription
 
     const handleInputChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -58,26 +56,36 @@ const SignUp = () => {
         event.preventDefault()
     }
 
+    const handleCloseSnackbar = () => {
+        setOpenSnackbar(false)
+    }
+
     async function handleSubmitUser(
         event: FormEvent<HTMLFormElement>
     ): Promise<void> {
         event.preventDefault()
         try {
-            const response = await fetch('http://localhost:3000/user', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(user),
-            })
+            const response = await fetch(
+                'http://localhost:8082/api/v1/users/register',
+                {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(user),
+                }
+            )
 
             if (!response.ok) {
-                throw new Error(`Erreur HTTP: ${response.status}`)
+                throw new Error(`HTTP Error: ${response.status}`)
             }
-            console.log(user)
-            console.log(response)
             const newUser = await response.json()
-            console.log('Nouvel utilisateur créé:', newUser)
+            console.log('New user created:', newUser)
+            setSnackbarMessage('User successfully registered!')
+            setOpenSnackbar(true)
+            navigate('/dashboard') // Redirigez vers la page ou le chemin de votre choix
         } catch (error) {
-            console.error("Erreur lors de la création de l'utilisateur:", error)
+            console.error('Error during user creation:', error)
+            setSnackbarMessage('Failed to register user.')
+            setOpenSnackbar(true)
         }
     }
 
@@ -139,27 +147,17 @@ const SignUp = () => {
                         label="Last Name"
                         name="lastName"
                     />
-                    <div className="box-btn">
-                        <FormControl>
-                            <Select
-                                labelId="demo-simple-select-helper-label"
-                                id="demo-simple-select-helper"
-                                value={user.role}
-                                onChange={handleSelectChange}
-                            >
-                                <MenuItem value={RolesTypes.ADMIN}>
-                                    {RolesTypes.ADMIN}
-                                </MenuItem>
-                                <MenuItem value={RolesTypes.CUSTOMER}>
-                                    {RolesTypes.CUSTOMER}
-                                </MenuItem>
-                            </Select>
-                        </FormControl>
-                    </div>
+
                     <Button variant="contained" type="submit">
                         Join us!
                     </Button>
                 </form>
+                <Snackbar
+                    open={openSnackbar}
+                    autoHideDuration={6000}
+                    onClose={handleCloseSnackbar}
+                    message={snackbarMessage}
+                />
             </div>
         </div>
     )
