@@ -11,7 +11,7 @@ import {
 } from '@mui/material'
 import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
-import { useNavigate } from 'react-router-dom' // Assurez-vous d'installer 'react-router-dom' si ce n'est pas déjà fait
+import { useNavigate } from 'react-router-dom'
 
 interface IUser {
     email: string
@@ -39,7 +39,7 @@ const SignUp = () => {
     const [showPassword, setShowPassword] = useState(false)
     const [openSnackbar, setOpenSnackbar] = useState(false)
     const [snackbarMessage, setSnackbarMessage] = useState('')
-    const navigate = useNavigate() // Pour la redirection après l'inscription
+    const navigate = useNavigate()
 
     const handleInputChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -66,7 +66,7 @@ const SignUp = () => {
         event.preventDefault()
         try {
             const response = await fetch(
-                'http://localhost:8082/api/v1/users/register',
+                'http://localhost:8084/api/v1/users/register',
                 {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },

@@ -1,0 +1,4 @@
+form > .inpupts:first-child{
+    display: flex;
+    gap: 3rem;
+}

@@ -15,7 +15,7 @@ const Offers = () => {
     const [bestOffers, setBestOffers] = useState<IAccomodations[]>([])
 
     useEffect(() => {
-        fetch('http://localhost:3000/accommodations')
+        fetch('http://localhost:8084/api/v1/accommodations')
             .then((response) => response.json())
             .then((data) => {
                 if (Array.isArray(data)) {
