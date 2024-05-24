@@ -22,6 +22,15 @@ spring:
           uri: lb://RESERVATION-MANAGEMENT-SERVICE
           predicates:
             - Path=/api/v1/reservations/**
+          metadata:
+            cors:
+              allowedOrigins: '*'
+              allowedMethods:
+                - GET
+                - POST
+                - PUT
+                - DELETE
+              allowedHeaders: '*'
 
 logging:
   level:
