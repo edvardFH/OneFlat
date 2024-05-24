@@ -1,41 +1,56 @@
-import Card from '@mui/material/Card'
-import CardContent from '@mui/material/CardContent'
-import CardMedia from '@mui/material/CardMedia'
-import Typography from '@mui/material/Typography'
-import { CardActionArea } from '@mui/material'
+import { IAccomodations } from '@/components/topOffers/offers'
 
 interface Props {
-    height: number
     src: string
     alt?: string
-    data: PropsChild
+    informations: IAccomodations
 }
 
-interface PropsChild {
-    title: string
-    desc: string
-}
-
-const _Card = ({ height, src, alt, data }: Props) => {
+const _Card = ({ src, alt, informations }: Props) => {
     return (
-        <Card sx={{ maxWidth: 345 }}>
-            <CardActionArea>
-                <CardMedia
-                    component="img"
-                    height={height}
-                    image={src}
-                    alt={alt}
-                />
-                <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">
-                        {data.title}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                        {data.desc}
-                    </Typography>
-                </CardContent>
-            </CardActionArea>
-        </Card>
+        <div className="box">
+            <div className="top">
+                <img src={src} alt={alt} />
+                <span>
+                    <i className="fas fa-heart"></i>
+                    <i className="fas fa-exchange-alt"></i>
+                </span>
+            </div>
+            <div className="bottom">
+                <h3>{informations.type}</h3>
+                <p>{informations.description}</p>
+                <div className="advants">
+                    <div>
+                        <span>Bedrooms</span>
+                        <div>
+                            <i className="fas fa-th-large"></i>
+                            <span>{informations.bedrooms}</span>
+                        </div>
+                    </div>
+                    <div>
+                        <span>Bathrooms</span>
+                        <div>
+                            <i className="fas fa-shower"></i>
+                            <span>{informations.bathrooms}</span>
+                        </div>
+                    </div>
+                    <div>
+                        <span>Area</span>
+                        <div>
+                            <i className="fas fa-vector-square"></i>
+                            <span>
+                                {informations.area}
+                                <span>m²</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div className="price">
+                    <span>For Sale</span>
+                    <span>{informations.price} $</span>
+                </div>
+            </div>
+        </div>
     )
 }
 

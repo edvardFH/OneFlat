@@ -1,25 +1,57 @@
+import { useState, useEffect } from 'react'
 import _Card from '../mui/components/Card'
 
-const Offers = () => {
-    //     let [bestOffers, setBestOffers] = useState(null)
+export interface IAccomodations {
+    type: string
+    location: string
+    price: number
+    bedrooms: number
+    bathrooms: number
+    area: number
+    description: string
+}
 
-    //     // 3. Create out useEffect function
-    //   useEffect(() => {
-    //     fetch("https://dog.ceo/api/breeds/image/random/3")
-    //     .then(response => response.json())
-    //         // 4. Setting *dogImage* to the image url that we received from the response above
-    //     .then(data => setDogImage(data.message))
-    //   },[])
-    return (
-        <div className="title">
-            <h1>Top Offers</h1>
-            <_Card
-                height={140}
-                src={
-                    'https://etudestech.com/wp-content/uploads/2023/05/midjourney-scaled.jpeg'
+const Offers = () => {
+    const [bestOffers, setBestOffers] = useState<IAccomodations[]>([])
+
+    useEffect(() => {
+        fetch('http://localhost:8000/accommodations')
+            .then((response) => response.json())
+            .then((data) => {
+                if (Array.isArray(data)) {
+                    setBestOffers(getRandomOffers(data, 3))
+                } else {
+                    console.error('Invalid data format:', data)
                 }
-                data={{ title: 'test', desc: 'qdqds' }}
-            />
+            })
+            .catch((error) => console.error('Error fetching data:', error))
+    }, [])
+
+    function getRandomOffers(
+        arr: IAccomodations[],
+        count: number
+    ): IAccomodations[] {
+        const shuffled = arr.sort(() => 0.5 - Math.random())
+        return shuffled.slice(0, count)
+    }
+
+    return (
+        <div className="container">
+            {bestOffers.map((offer, index) => (
+                <_Card
+                    key={index}
+                    src="https://etudestech.com/wp-content/uploads/2023/05/midjourney-scaled.jpeg"
+                    informations={{
+                        type: offer.type,
+                        location: offer.location,
+                        description: offer.location,
+                        bathrooms: offer.bathrooms,
+                        bedrooms: offer.bedrooms,
+                        area: offer.area,
+                        price: offer.price,
+                    }}
+                />
+            ))}
         </div>
     )
 }
