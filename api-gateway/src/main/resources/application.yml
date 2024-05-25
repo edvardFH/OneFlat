@@ -32,12 +32,6 @@ spring:
                 - DELETE
               allowedHeaders: '*'
 
-logging:
-  level:
-    org.springframework.cloud.gateway: DEBUG
-    reactor.netty: DEBUG
-
-
 eureka:
   client:
     service-url:

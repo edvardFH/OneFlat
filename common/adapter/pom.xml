@@ -31,6 +31,10 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.onesquad</groupId>
             <artifactId>domain</artifactId>
             <version>${project.version}</version>
