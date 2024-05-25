@@ -23,12 +23,6 @@ spring:
           predicates:
             - Path=/api/v1/reservations/**
 
-logging:
-  level:
-    org.springframework.cloud.gateway: DEBUG
-    reactor.netty: DEBUG
-
-
 eureka:
   client:
     service-url:

@@ -7,14 +7,19 @@ import com.onesquad.user.domain.Email;
 import com.onesquad.user.domain.PhoneNumber;
 import com.onesquad.user.domain.User;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 import java.util.UUID;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserService {
+
     private final IUserRepository userRepository;
 
     public Optional<User> getUserById(UUID id) {
