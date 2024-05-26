@@ -31,6 +31,14 @@ spring:
                 - PUT
                 - DELETE
               allowedHeaders: '*'
+      default-filters:
+        - name: AuthenticationFilter
+          args:
+            whitelist:
+              - /api/v1/auth/**
+              - /api/v1/accommodations/*
+              - /api/v1/accommodations/user/*
+              - /api/v1/reservations/accommodation/*/occupied-periods
 
 eureka:
   client:

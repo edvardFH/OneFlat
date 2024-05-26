@@ -1,8 +1,8 @@
 package com.onesquad.user.adapter.config;
 
-import com.onesquad.user.adapter.mapper.UserAppDataMapper;
+import com.onesquad.common.controller.GlobalExceptionHandler;
+import com.onesquad.user.adapter.mapper.UserAppMapper;
 import com.onesquad.user.adapter.persistence.IUserJpaRepository;
-import com.onesquad.user.application.repository.UserAppData;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,7 +23,7 @@ public class UserApplicationConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return username -> UserAppDataMapper.toAppData(
+        return username -> UserAppMapper.toAppData(
                 userJpaRepository
                         .findByEmail(username)
                         .orElseThrow(() ->
@@ -51,5 +51,10 @@ public class UserApplicationConfig {
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
+    }
+
+    @Bean
+    public GlobalExceptionHandler globalExceptionHandler() {
+        return new GlobalExceptionHandler();
     }
 }

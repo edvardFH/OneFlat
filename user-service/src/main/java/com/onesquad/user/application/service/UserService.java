@@ -26,12 +26,6 @@ public class UserService {
         return userRepository.findById(id);
     }
 
-    public User createUser(User user)
-            throws FieldValueAlreadyUsedException, MalformedDataException {
-        validateUser(user);
-        return userRepository.save(user);
-    }
-
     public Optional<User> getUserByEmail(String email) {
         return userRepository.findByEmail(email);
     }
@@ -49,24 +43,6 @@ public class UserService {
             return getUserByPhoneNumber(phoneNumber);
         } else {
             throw new IllegalArgumentException("At least one search parameter must be provided");
-        }
-    }
-
-    private void validateUser(User user) {
-        if (getUserByEmail(user.email().value()).isPresent()) {
-            throw new FieldValueAlreadyUsedException("Email already taken");
-        }
-
-        if (getUserByPhoneNumber(user.phoneNumber().value()).isPresent()) {
-            throw new FieldValueAlreadyUsedException("Phone number already taken");
-        }
-
-        if (!Email.isEmail(user.email().value())) {
-            throw new MalformedDataException("Invalid email format");
-        }
-
-        if (!PhoneNumber.isPhoneNumber(user.phoneNumber().value())) {
-            throw new MalformedDataException("Invalid phone number format");
         }
     }
 }

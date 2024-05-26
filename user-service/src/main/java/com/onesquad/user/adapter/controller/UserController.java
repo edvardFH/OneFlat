@@ -23,18 +23,6 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping("/register")
-    public ResponseEntity<?> createUser(@RequestBody UserCreateDTO userRequestDTO) {
-        try {
-            User user = UserDTOMapper.toDomain(userRequestDTO);
-            User createdUser = userService.createUser(user);
-            UserResponseDTO responseDTO = UserDTOMapper.toDTO(createdUser);
-            return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
-        } catch (RuntimeException e) {
-            return handleException(e);
-        }
-    }
-
     @GetMapping("/{userId}")
     public ResponseEntity<?> getUserById(@PathVariable("userId") UUID userId) {
         try {
