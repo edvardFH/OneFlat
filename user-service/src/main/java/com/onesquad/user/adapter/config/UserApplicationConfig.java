@@ -1,5 +1,6 @@
 package com.onesquad.user.adapter.config;
 
+import com.onesquad.common.controller.GlobalExceptionHandler;
 import com.onesquad.user.adapter.mapper.UserAppDataMapper;
 import com.onesquad.user.adapter.persistence.IUserJpaRepository;
 import com.onesquad.user.application.repository.UserAppData;
@@ -51,5 +52,10 @@ public class UserApplicationConfig {
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
+    }
+
+    @Bean
+    public GlobalExceptionHandler globalExceptionHandler() {
+        return new GlobalExceptionHandler();
     }
 }

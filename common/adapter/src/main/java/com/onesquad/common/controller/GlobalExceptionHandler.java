@@ -1,6 +1,7 @@
 package com.onesquad.common.controller;
 
 import com.onesquad.common.exception.DomainRuleViolated;
+import com.onesquad.common.exception.FieldValueAlreadyUsedException;
 import com.onesquad.common.exception.IllegalOperationException;
 import com.onesquad.common.exception.InvalidSearchCriteriaException;
 import com.onesquad.common.exception.MalformedDataException;
@@ -11,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import java.nio.file.FileAlreadyExistsException;
 
 @ControllerAdvice
 @Slf4j
@@ -34,7 +37,10 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 
-    @ExceptionHandler(IllegalOperationException.class)
+    @ExceptionHandler({
+            IllegalOperationException.class,
+            FieldValueAlreadyUsedException.class
+    })
     public ResponseEntity<String> handleIllegalOperationException(Exception ex) {
         log.error(ex.toString());
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ex.getMessage());
