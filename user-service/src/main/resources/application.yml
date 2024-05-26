@@ -22,5 +22,5 @@ eureka:
     fetch-registry: true
     register-with-eureka: true
 jwt:
-  secret: qlNu9fjtErHWR8WgdMbY8Z4EKVzjME7fpjAsmQH95JsFFds7SeJkIM11z160WwH526m1HEcfFFJpDH3TAGLKOg==
+  secret: af750a490c7206052ae5054c2e35b07e3831a6c87f69c74d3cc548248742015bd90b97d61bdb21309680bf2d599ca1116a725a2badef206153ef4db06c9c74ff
   validity.duration: 1440000 # 24 hours in ms

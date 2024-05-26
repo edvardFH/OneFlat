@@ -17,7 +17,7 @@ import org.springframework.web.client.RestTemplate;
         "com.onesquad.user.adapter.persistence",
         "com.onesquad.reservation.adapter.persistence"
 })
-public class ReservationConfig {
+public class ReservationApplicationConfig {
 
     @Bean
     @LoadBalanced
