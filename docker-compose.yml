@@ -29,8 +29,75 @@ services:
       - postgres
     restart: unless-stopped
 
+  eureka-server:
+    build:
+      context: ./eureka-server
+      dockerfile: Dockerfile
+    ports:
+      - "8761:8761"
+    networks:
+      - backend
+
+  gateway:
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    ports:
+      - "8084:8084"
+    networks:
+      - backend
+    depends_on:
+      - eureka-server
+    environment:
+      EUREKA_SERVICE_URL: http://eureka-server:8761/eureka
+
+  user-service:
+    build:
+      context: ./user-service
+      dockerfile: Dockerfile
+    ports:
+      - "8082:8082"
+    networks:
+      - backend
+    depends_on:
+      - gateway
+      - postgres
+    environment:
+      EUREKA_SERVICE_URL: http://eureka-server:8761/eureka
+
+  accommodation-catalog-service:
+    build:
+      context: ./accommodation-catalog-service
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    networks:
+      - backend
+    depends_on:
+      - gateway
+      - postgres
+    environment:
+      EUREKA_SERVICE_URL: http://eureka-server:8761/eureka
+
+  reservation-management-service:
+    build:
+      context: ./reservation-management-service
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+    networks:
+      - backend
+    depends_on:
+      - gateway
+      - postgres
+    environment:
+      EUREKA_SERVICE_URL: http://eureka-server:8761/eureka
+
+
 networks:
   postgres:
+    driver: bridge
+  backend:
     driver: bridge
 
 volumes:
