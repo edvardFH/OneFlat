@@ -7,6 +7,12 @@ Ce projet est une application de location de logement basée sur l’architectur
 2. **User Service** : Gère les informations sur les utilisateurs.
 3. **Reservation Management Serice** : Gère les réservations et la disponibilité des logements.
 
+## Architecture de l'application
+![Schéma de l'architecture du projet](./doc/project_architecture.png)
+
+## Architecture des microservices
+![Schéma du User Service](./doc/user_service_architecture.png)
+
 ## Endpoints
 
 ### User Service

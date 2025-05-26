@@ -48,8 +48,6 @@ services:
       - backend
     depends_on:
       - eureka-server
-    environment:
-      EUREKA_SERVICE_URL: http://eureka-server:8761/eureka
 
   user-service:
     build:
@@ -62,8 +60,6 @@ services:
     depends_on:
       - gateway
       - postgres
-    environment:
-      EUREKA_SERVICE_URL: http://eureka-server:8761/eureka
 
   accommodation-catalog-service:
     build:
@@ -76,8 +72,6 @@ services:
     depends_on:
       - gateway
       - postgres
-    environment:
-      EUREKA_SERVICE_URL: http://eureka-server:8761/eureka
 
   reservation-management-service:
     build:
@@ -90,8 +84,6 @@ services:
     depends_on:
       - gateway
       - postgres
-    environment:
-      EUREKA_SERVICE_URL: http://eureka-server:8761/eureka
 
 
 networks:
