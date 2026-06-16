@@ -15,28 +15,7 @@ Demonstrates **Clean Architecture** (Onion pattern), centralized JWT authenticat
 
 ## Architecture Overview
 
-```mermaid
-flowchart TD
-    SPA["⚛️ SPA — React Frontend"]
-
-    subgraph docker["Docker Compose"]
-        GW["🔀 API Gateway\nJWT validation · :8084"]
-        EUR["🔍 Eureka Server\nService Registry · :8761"]
-
-        subgraph services["Microservices"]
-            US["👤 User Service\n:8082"]
-            ACS["🏠 Accommodation\nCatalog Service · :8080"]
-            RMS["📅 Reservation\nManagement Service · :8081"]
-        end
-
-        DB[(🗄️ PostgreSQL · :5432)]
-    end
-
-    SPA -->|"HTTP / REST"| GW
-    GW <-.->|"register & discover"| EUR
-    GW --> US & ACS & RMS
-    US & ACS & RMS --> DB
-```
+![Architecture Overview](./doc/project_architecture.png)
 
 The **API Gateway** is the single entry point for all client requests. It validates JWT tokens before
 routing, and resolves service addresses dynamically through the **Eureka** registry. Each service
@@ -46,23 +25,7 @@ owns its own business domain independently.
 
 ## Clean Architecture — Layer Independence
 
-```mermaid
-graph LR
-    subgraph ADP["🔵 ADAPTER — Web, Persistence, External APIs"]
-        CTL["REST Controllers\nJPA Repositories\nFeign Clients"]
-    end
-
-    subgraph APP["🟠 APPLICATION — Use Cases, Ports"]
-        SVC["Services\nRepository Interfaces\nApplication DTOs"]
-    end
-
-    subgraph DOM["🟡 DOMAIN — Entities, Value Objects"]
-        ENT["User · Accommodation · Reservation\nPrice · Email · Area · Location"]
-    end
-
-    ADP -->|depends on| APP
-    APP -->|depends on| DOM
-```
+![Clean Architecture — Layer Independence](./doc/user_service_architecture.png)
 
 This project applies **Clean Architecture** (Robert C. Martin, *Clean Architecture*, 2017), also
 known as **Onion Architecture** (Jeffrey Palermo, 2008). The governing rule is the
