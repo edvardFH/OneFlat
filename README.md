@@ -1,348 +1,204 @@
 # OneFlat
 
-## Introduction
+![Java](https://img.shields.io/badge/Java-21-orange?logo=openjdk&logoColor=white)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2-brightgreen?logo=springboot&logoColor=white)
+![Spring Cloud](https://img.shields.io/badge/Spring%20Cloud-2023-brightgreen?logo=spring&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-ready-2496ED?logo=docker&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-4169E1?logo=postgresql&logoColor=white)
+![JWT](https://img.shields.io/badge/JWT-auth-000000?logo=jsonwebtokens&logoColor=white)
+![Maven](https://img.shields.io/badge/Maven-multi--module-C71A36?logo=apachemaven&logoColor=white)
 
-Ce projet est une application de location de logement basée sur l’architecture des microservices. Il comprend trois principaux services :
-1. **Accommodation Service** : Gère les informations sur les logements.
-2. **User Service** : Gère les informations sur les utilisateurs.
-3. **Reservation Management Serice** : Gère les réservations et la disponibilité des logements.
+A rental platform built with **5 independent Spring Boot microservices**.
+Demonstrates **Clean Architecture** (Onion pattern), centralized JWT authentication, and dynamic service discovery — fully containerized with Docker Compose.
 
-## Architecture de l'application
-![Schéma de l'architecture du projet](./doc/project_architecture.png)
+---
 
-## Architecture des microservices
-![Schéma du User Service](./doc/user_service_architecture.png)
+## Architecture Overview
 
-## Endpoints
+```mermaid
+flowchart TD
+    SPA["⚛️ SPA — React Frontend"]
 
-### User Service
+    subgraph docker["Docker Compose"]
+        GW["🔀 API Gateway\nJWT validation · :8084"]
+        EUR["🔍 Eureka Server\nService Registry · :8761"]
 
-Base URL : `/api/v1/users`
+        subgraph services["Microservices"]
+            US["👤 User Service\n:8082"]
+            ACS["🏠 Accommodation\nCatalog Service · :8080"]
+            RMS["📅 Reservation\nManagement Service · :8081"]
+        end
 
-#### 1. Créer un utilisateur
-- **URL** : `/api/v1/users/register`
-- **Méthode HTTP** : POST
-- **Description** : Crée un nouvel utilisateur.
-- **Body** : `UserCreateDTO`
+        DB[(🗄️ PostgreSQL · :5432)]
+    end
 
-```json
-{
-  "email": "john.doe@example.com",
-  "phoneNumber": "+1234567890",
-  "password": "securepassword123",
-  "firstName": "John",
-  "lastName": "Doe",
-  "role": "CUSTOMER"
+    SPA -->|"HTTP / REST"| GW
+    GW <-.->|"register & discover"| EUR
+    GW --> US & ACS & RMS
+    US & ACS & RMS --> DB
+```
+
+The **API Gateway** is the single entry point for all client requests. It validates JWT tokens before
+routing, and resolves service addresses dynamically through the **Eureka** registry. Each service
+owns its own business domain independently.
+
+---
+
+## Clean Architecture — Layer Independence
+
+```mermaid
+graph LR
+    subgraph ADP["🔵 ADAPTER — Web, Persistence, External APIs"]
+        CTL["REST Controllers\nJPA Repositories\nFeign Clients"]
+    end
+
+    subgraph APP["🟠 APPLICATION — Use Cases, Ports"]
+        SVC["Services\nRepository Interfaces\nApplication DTOs"]
+    end
+
+    subgraph DOM["🟡 DOMAIN — Entities, Value Objects"]
+        ENT["User · Accommodation · Reservation\nPrice · Email · Area · Location"]
+    end
+
+    ADP -->|depends on| APP
+    APP -->|depends on| DOM
+```
+
+This project applies **Clean Architecture** (Robert C. Martin, *Clean Architecture*, 2017), also
+known as **Onion Architecture** (Jeffrey Palermo, 2008). The governing rule is the
+**Dependency Rule**: source code dependencies must point inward only.
+
+| Layer | Role | Framework knowledge |
+|---|---|---|
+| **DOMAIN** | Entities and Value Objects with their invariants | None — plain Java |
+| **APPLICATION** | Orchestrates use cases; defines repository interfaces (ports) | None |
+| **ADAPTER** | Implements ports: Spring MVC controllers, JPA repos, Feign clients | Here only |
+
+**Concrete consequence:** replacing PostgreSQL with another database, or adding a Kafka consumer
+alongside the REST controllers, requires changes only in the ADAPTER layer. The domain and
+application logic are untouched.
+
+```java
+// Business rules live in the domain, not in framework annotations
+public record Price(double value) {
+    public Price {
+        if (value <= 0) throw new DomainRuleViolated("Price must be positive");
+    }
 }
 ```
 
-- **Réponses** :
-    - **201 Created** : L'utilisateur a été créé avec succès.
-    - **400 Bad Request** : Données invalides.
-    - **409 Conflict** : Email ou numéro de téléphone déjà utilisé.
+---
 
-#### 2. Obtenir un utilisateur par ID
-- **URL** : `/api/v1/users/{userId}`
-- **Méthode HTTP** : GET
-- **Description** : Récupère les détails d'un utilisateur spécifique par son ID.
-- **Réponses** :
-    - **200 OK** : Détails de l'utilisateur.
-    - **404 Not Found** : Utilisateur non trouvé.
+## Architecture Decisions
 
-#### 3. Rechercher un utilisateur
-- **URL** : `/api/v1/users/search`
-- **Méthode HTTP** : GET
-- **Description** : Recherche un utilisateur selon différents critères.
-- **Paramètres de requête** :
-    - `i` (UUID, optionnel) : ID de l'utilisateur.
-    - `e` (String, optionnel) : Email.
-    - `p` (String, optionnel) : Numéro de téléphone.
-- **Réponses** :
-    - **200 OK** : Détails de l'utilisateur correspondant aux critères de recherche.
-    - **404 Not Found** : Utilisateur non trouvé.
-    - **400 Bad Request** : Critères de recherche invalides.
+### ADR-01 — JWT validated at the gateway, not in each service
 
+**Context:** Multiple services need to authenticate incoming requests.  
+**Decision:** Validate JWT once in the API Gateway (Spring Cloud Gateway, reactive/WebFlux).
+Services are unreachable from the outside without a valid token, except for explicitly whitelisted
+public routes.  
+**Consequence:** Auth logic is centralized; services are stateless with respect to authentication.
+The reactive (WebFlux) constraint is imposed by Spring Cloud Gateway's non-blocking model.
 
-### Accommodation Service
+---
 
-Base URL : `/api/v1/accommodations`
+### ADR-02 — Clean Architecture (Onion pattern) in every service
 
-#### 1. Créer une accommodation
-- **URL** : `/api/v1/accommodations/user/{ownerId}/accommodation`
-- **Méthode HTTP** : POST
-- **Description** : Crée une nouvelle accommodation pour un utilisateur spécifique.
-- **Body** : `AccommodationRequestDTO`
+**Context:** Business logic at risk of coupling to Spring/JPA framework details.  
+**Decision:** Apply Clean Architecture with three concentric layers (adapter / application / domain),
+all dependencies pointing inward. Based on Robert C. Martin's *Clean Architecture* (2017).  
+**Consequence:** Domain is fully framework-agnostic and independently testable. Infrastructure
+(DB engine, HTTP transport) can be swapped without touching business rules.
 
-```json
-{
-  "type": "APARTMENT",
-  "location": {
-    "street": "123 Main St",
-    "city": "Paris",
-    "postalCode": "75001",
-    "country": "France"
-  },
-  "price": 1200.50,
-  "numberOfRooms": 3,
-  "numberOfBathrooms": 2,
-  "area": 75,
-  "description": "A spacious apartment in the heart of Paris.",
-  "isVisible": false
-}
+---
+
+### ADR-03 — Shared `common` Maven module
+
+**Context:** Domain Value Objects and inter-service Feign clients are needed in multiple services.  
+**Decision:** A Maven multi-module `common` library with two sub-modules: `common-domain`
+(Value Objects shared across services) and `common-adapter` (Feign client interfaces).  
+**Consequence:** Single source of truth for domain contracts. Trade-off: compile-time coupling within
+the mono-repo — accepted because the domain is stable and this is a cohesive product.
+
+---
+
+### ADR-04 — Netflix Eureka for service discovery
+
+**Context:** Docker containers receive dynamic IPs at runtime; hardcoding addresses is fragile.  
+**Decision:** Netflix Eureka (Spring Cloud) lets services self-register by logical name. The gateway
+resolves them at routing time without any static configuration.  
+**Consequence:** Services are addressed by name (`ACCOMMODATION-CATALOG-SERVICE`), enabling
+independent scaling and zero-config inter-service routing via OpenFeign.
+
+---
+
+## Getting Started
+
+**Prerequisites:** Docker and Docker Compose.
+
+```bash
+git clone https://github.com/<your-username>/OneFlat.git
+cd OneFlat
+docker-compose up --build
 ```
 
-- **Réponses** :
-    - **201 Created** : L'accommodation a été créée avec succès.
-    - **400 Bad Request** : Données invalides.
-    - **404 Not Found** : Utilisateur non trouvé.
+Once all containers are up, try the full auth flow via the gateway:
 
-#### 2. Mettre à jour une accommodation
-- **URL** : `/api/v1/accommodations/user/{ownerId}/accommodation/{id}`
-- **Méthode HTTP** : PUT
-- **Description** : Met à jour une accommodation existante.
-- **Body** : `AccommodationRequestDTO`
+```bash
+# 1. Register a user
+curl -X POST http://localhost:8084/api/v1/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{
+    "firstName": "Alice",
+    "lastName": "Dupont",
+    "email": "alice@example.com",
+    "phoneNumber": "+33600000000",
+    "password": "secret"
+  }'
 
-```json
-{
-  "type": "APARTMENT",
-  "location": {
-    "street": "123 Main St",
-    "city": "Paris",
-    "postalCode": "75001",
-    "country": "France"
-  },
-  "price": 1200.50,
-  "numberOfRooms": 3,
-  "numberOfBathrooms": 2,
-  "area": 75,
-  "description": "A spacious apartment in the heart of Paris.",
-  "isVisible": true
-}
+# 2. Log in → copy the returned token
+curl -X POST http://localhost:8084/api/v1/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email": "alice@example.com", "password": "secret"}'
 ```
 
-- **Réponses** :
-    - **200 OK** : L'accommodation a été mise à jour avec succès.
-    - **400 Bad Request** : Données invalides.
-    - **404 Not Found** : Accommodation ou utilisateur non trouvé.
+| Service | Port | URL |
+|---|---|---|
+| API Gateway (entry point) | 8084 | `http://localhost:8084` |
+| Eureka Dashboard | 8761 | `http://localhost:8761` |
+| pgAdmin | 5050 | `http://localhost:5050` |
 
+> Individual service ports (8080, 8081, 8082) are exposed for local development.
+> In production, all traffic goes through the gateway on **:8084**.
 
-#### 3. Obtenir les accommodations par ID de propriétaire
-- **URL** : `/api/v1/accommodations/user/{ownerId}`
-- **Méthode HTTP** : GET
-- **Description** : Récupère toutes les accommodations d'un utilisateur spécifique.
-- **Réponses** :
-    - **200 OK** : Liste des accommodations.
-    - **404 Not Found** : Utilisateur non trouvé.
+---
 
+## Tech Stack
 
-#### 4. Obtenir une accommodation par ID
-- **URL** : `/api/v1/accommodations/{id}`
-- **Méthode HTTP** : GET
-- **Description** : Récupère une accommodation spécifique par son ID.
-- **Réponses** :
-    - **200 OK** : Détails de l'accommodation.
-    - **404 Not Found** : Accommodation ou utilisateur non trouvé.
+| Layer | Technology |
+|---|---|
+| Language | Java 21 |
+| Framework | Spring Boot 3.2 · Spring Cloud 2023 |
+| API Gateway | Spring Cloud Gateway (WebFlux / reactive) |
+| Service Discovery | Netflix Eureka |
+| Security | Spring Security + JWT (jjwt) |
+| Inter-service HTTP | OpenFeign |
+| Persistence | Spring Data JPA + PostgreSQL |
+| Build | Maven (multi-module) |
+| Containers | Docker · Docker Compose |
 
+---
 
-#### 5. Rechercher des accommodations
-- **URL** : `/api/v1/accommodations/search`
-- **Méthode HTTP** : GET
-- **Description** : Recherche des accommodations selon différents critères.
-- **Paramètres de requête** :
-    - `t` (String, optionnel) : Type d'accommodation.
-    - `c` (String, optionnel) : Ville.
-    - `min` (Double, optionnel) : Prix minimum.
-    - `max` (Double, optionnel) : Prix maximum.
-- **Réponses** :
-    - **200 OK** : Liste des accommodations correspondant aux critères de recherche.
-    - **400 Bad Request** : Critères de recherche invalides.
+## Full API Reference
 
+See **[API_REFERENCE.md](./API_REFERENCE.md)** for the complete endpoint documentation, request
+bodies, response shapes, and status codes for all four service groups:
 
-#### 6. Vérifier la visibilité d'un logement
-- **URL** : `/api/v1/accommodations/{id}/is-visible`
-- **Méthode HTTP** : GET
-- **Description** : Vérifie si un logement est visible.
-- **Réponses** :
-  - **200 OK** : Retourne `{"isVisible": true}` ou `{"isVisible": false}`.
-  - **404 Not Found** : Logement non trouvé.
+- 🔐 Authentication (`/api/v1/auth`)
+- 👤 Users (`/api/v1/users`)
+- 🏠 Accommodations (`/api/v1/accommodations`)
+- 📅 Reservations (`/api/v1/reservations`)
 
-
-### Reservation Management Service
-
-Base URL : `/api/v1/reservations`
-
-#### 1. Créer une réservation
-- **URL** : `/api/v1/reservations`
-- **Méthode HTTP** : POST
-- **Description** : Crée une nouvelle réservation.
-- **Body** : `ReservationRequestDTO`
-
-```json
-{
-  "accommodationId": "accommodation-uuid",
-  "userId": "user-uuid",
-  "startDate": "2024-06-01T12:00:00Z",
-  "endDate": "2024-06-07T12:00:00Z",
-  "comment": "Looking forward to my stay"
-}
-```
-
-- **Réponses** :
-  - **201 Created** : Réservation créée avec succès.
-  - **400 Bad Request** : Données de réservation invalides.
-  - **404 Not Found** : Logement ou utilisateur non trouvé.
-
-```json
-{
-  "id": "123e4567-e89b-12d3-a456-426614174002",
-  "accommodationId": "123e4567-e89b-12d3-a456-426614174000",
-  "userId": "123e4567-e89b-12d3-a456-426614174001",
-  "startDate": "2024-06-01T00:00:00Z",
-  "endDate": "2024-06-10T00:00:00Z",
-  "status": "PENDING",
-  "comment": "Vacation stay"
-}
-```
-
-#### 2. Obtenir une réservation par ID
-- **URL** : `/api/v1/reservations/{reservationId}`
-- **Méthode HTTP** : GET
-- **Description** : Récupère une réservation par son ID.
-- **Réponse** : `ReservationResponseDTO`
-- **Réponses** :
-  - **200 OK** : Réservation récupérée avec succès.
-  - **404 Not Found** : Réservation non trouvée.
-
-```json
-{
-  "id": "123e4567-e89b-12d3-a456-426614174002",
-  "accommodationId": "123e4567-e89b-12d3-a456-426614174000",
-  "userId": "123e4567-e89b-12d3-a456-426614174001",
-  "startDate": "2024-06-01T00:00:00Z",
-  "endDate": "2024-06-10T00:00:00Z",
-  "status": "PENDING",
-  "comment": "Vacation stay"
-}
-```
-
-#### 3. Obtenir les réservations d'un logement
-- **URL** : `/api/v1/reservations/accommodation/{accommodationId}`
-- **Méthode HTTP** : GET
-- **Description** : Récupère toutes les réservations d'un logement par son ID.
-- **Réponse** : Liste de `ReservationResponseDTO`
-- **Réponses** :
-  - **200 OK** : Liste des réservations récupérée avec succès.
-  - **404 Not Found** : Logement non trouvé.
-
-```json 
-[
-  {
-    "id": "123e4567-e89b-12d3-a456-426614174002",
-    "accommodationId": "123e4567-e89b-12d3-a456-426614174000",
-    "userId": "123e4567-e89b-12d3-a456-426614174001",
-    "startDate": "2024-06-01T00:00:00Z",
-    "endDate": "2024-06-10T00:00:00Z",
-    "status": "PENDING",
-    "comment": "Vacation stay"
-  }
-]
-```
-
-#### 4. Obtenir les réservations d'un utilisateur
-- **URL** : `/api/v1/reservations/user/{userId}`
-- **Méthode HTTP** : GET
-- **Description** : Récupère toutes les réservations d'un utilisateur par son ID.
-- **Réponse** : Liste de `ReservationResponseDTO`
-- **Réponses** :
-  - **200 OK** : Liste des réservations récupérée avec succès.
-  - **404 Not Found** : Utilisateur non trouvé.
-
-
-
-#### 5. Mettre à jour une réservation
-- **URL** : `/api/v1/reservations/{reservationId}`
-- **Méthode HTTP** : PUT
-- **Description** : Met à jour une réservation existante.
-- **Body** : `ReservationRequestDTO`
-```json 
-{
-  "accommodationId": "123e4567-e89b-12d3-a456-426614174000",
-  "userId": "123e4567-e89b-12d3-a456-426614174001",
-  "startDate": "2024-06-05T00:00:00Z",
-  "endDate": "2024-06-15T00:00:00Z",
-  "comment": "Updated vacation stay"
-}
-```
-- **Réponses** :
-  - **200 OK** : Réservation mise à jour avec succès.
-  - **400 Bad Request** : Données de réservation invalides ou incohérentes.
-  - **404 Not Found** : Réservation, logement ou utilisateur non trouvé.
-
-
-
-#### 6. Supprimer une réservation
-- **URL** : `/api/v1/reservations/{reservationId}`
-- **Méthode HTTP** : DELETE
-- **Description** : Supprime une réservation par son ID.
-- **Réponses** :
-  - **204 No Content** : Réservation supprimée avec succès.
-  - **404 Not Found** : Réservation non trouvée.
-
-
-#### 7. Annuler une réservation
-- **URL** : `/api/v1/reservations/{reservationId}/cancel`
-- **Méthode HTTP** : PUT
-- **Description** : Annule une réservation par son ID.
-- **Réponse** : `ReservationResponseDTO`
-- **Réponses** :
-  - **200 OK** : Réservation annulée avec succès.
-  - **400 Bad Request** : Annulation invalide.
-  - **403 Forbidden** : Action interdite si la réservation a déjà été rejetée.
-  - **404 Not Found** : Réservation non trouvée.
-
-
-#### 8. Approuver une réservation
-- **URL** : `/api/v1/reservations/{reservationId}/approve`
-- **Méthode HTTP** : PUT
-- **Description** : Approuve une réservation par son ID.
-- **Réponse** : `ReservationResponseDTO`
-- **Réponses** :
-  - **200 OK** : Réservation approuvée avec succès.
-  - **400 Bad Request** : Approvement invalide.
-  - **403 Forbidden** : Action interdite si la réservation n'est pas en attente.
-  - **404 Not Found** : Réservation non trouvée.
-
-
-#### 9. Rejeter une réservation
-- **URL** : `/api/v1/reservations/{reservationId}/reject`
-- **Méthode HTTP** : PUT
-- **Description** : Rejette une réservation par son ID.
-- **Réponse** : `ReservationResponseDTO`
-- **Réponses** :
-  - **200 OK** : Réservation rejetée avec succès.
-  - **400 Bad Request** : Rejet invalide.
-  - **403 Forbidden** : Action interdite si la réservation n'est pas en attente.
-  - **404 Not Found** : Réservation non trouvée.
-
-
-#### 10. Obtenir les périodes d'indisponibilité d'un logement
-- **URL** : `/api/v1/reservations/accommodation/{accommodationId}/occupied-periods`
-- **Méthode HTTP** : GET
-- **Description** : Récupère les périodes d'indisponibilité d'un logement par son ID.
-- **Réponse** : Liste de `UnavailabilityPeriodDTO`
-- **Réponses** :
-  - **200 OK** : Liste des périodes d'indisponibilité récupérée avec succès.
-  - **404 Not Found** : Logement non trouvé.
-
-```json 
-[
-  {
-    "startDate": "2024-06-01T00:00:00Z",
-    "endDate": "2024-06-10T00:00:00Z"
-  },
-  {
-    "startDate": "2024-06-15T00:00:00Z",
-    "endDate": "2024-06-20T00:00:00Z"
-  }
-]
-```
+> All requests go through the gateway on **:8084**.
+> Public endpoints (registration, login, browsing accommodations) do not require a token.
+> All other endpoints require the header `Authorization: Bearer <token>`.
