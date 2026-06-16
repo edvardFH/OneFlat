@@ -9,7 +9,7 @@
 ![Maven](https://img.shields.io/badge/Maven-multi--module-C71A36?logo=apachemaven&logoColor=white)
 
 A rental platform built with **5 independent Spring Boot microservices**.
-Demonstrates **Clean Architecture** (Onion pattern), centralized JWT authentication, and dynamic service discovery — fully containerized with Docker Compose.
+Demonstrates **Clean Architecture** (Onion pattern), centralized JWT authentication, and dynamic service discovery - fully containerized with Docker Compose.
 
 ---
 
@@ -23,9 +23,9 @@ owns its own business domain independently.
 
 ---
 
-## Clean Architecture — Layer Independence
+## Clean Architecture - Layer Independence
 
-![Clean Architecture — Layer Independence](./doc/user_service_architecture.png)
+![Clean Architecture - Layer Independence](./doc/user_service_architecture.png)
 
 This project applies **Clean Architecture** (Robert C. Martin, *Clean Architecture*, 2017), also
 known as **Onion Architecture** (Jeffrey Palermo, 2008). The governing rule is the
@@ -33,7 +33,7 @@ known as **Onion Architecture** (Jeffrey Palermo, 2008). The governing rule is t
 
 | Layer | Role | Framework knowledge |
 |---|---|---|
-| **DOMAIN** | Entities and Value Objects with their invariants | None — plain Java |
+| **DOMAIN** | Entities and Value Objects with their invariants | None - plain Java |
 | **APPLICATION** | Orchestrates use cases; defines repository interfaces (ports) | None |
 | **ADAPTER** | Implements ports: Spring MVC controllers, JPA repos, Feign clients | Here only |
 
@@ -54,7 +54,7 @@ public record Price(double value) {
 
 ## Architecture Decisions
 
-### ADR-01 — JWT validated at the gateway, not in each service
+### ADR-01 - JWT validated at the gateway, not in each service
 
 **Context:** Multiple services need to authenticate incoming requests.  
 **Decision:** Validate JWT once in the API Gateway (Spring Cloud Gateway, reactive/WebFlux).
@@ -65,7 +65,7 @@ The reactive (WebFlux) constraint is imposed by Spring Cloud Gateway's non-block
 
 ---
 
-### ADR-02 — Clean Architecture (Onion pattern) in every service
+### ADR-02 - Clean Architecture (Onion pattern) in every service
 
 **Context:** Business logic at risk of coupling to Spring/JPA framework details.  
 **Decision:** Apply Clean Architecture with three concentric layers (adapter / application / domain),
@@ -75,17 +75,17 @@ all dependencies pointing inward. Based on Robert C. Martin's *Clean Architectur
 
 ---
 
-### ADR-03 — Shared `common` Maven module
+### ADR-03 - Shared `common` Maven module
 
 **Context:** Domain Value Objects and inter-service Feign clients are needed in multiple services.  
 **Decision:** A Maven multi-module `common` library with two sub-modules: `common-domain`
 (Value Objects shared across services) and `common-adapter` (Feign client interfaces).  
 **Consequence:** Single source of truth for domain contracts. Trade-off: compile-time coupling within
-the mono-repo — accepted because the domain is stable and this is a cohesive product.
+the mono-repo - accepted because the domain is stable and this is a cohesive product.
 
 ---
 
-### ADR-04 — Netflix Eureka for service discovery
+### ADR-04 - Netflix Eureka for service discovery
 
 **Context:** Docker containers receive dynamic IPs at runtime; hardcoding addresses is fragile.  
 **Decision:** Netflix Eureka (Spring Cloud) lets services self-register by logical name. The gateway
